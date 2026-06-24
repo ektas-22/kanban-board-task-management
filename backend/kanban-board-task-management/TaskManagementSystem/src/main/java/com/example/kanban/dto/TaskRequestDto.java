@@ -2,9 +2,9 @@ package com.example.kanban.dto;
 
 import com.example.kanban.entity.TaskStatus;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +15,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskRequestDto {
-	@Column(name = "title", nullable = false, length = 255)
+
+	@NotBlank(message = "Title cannot be empty")
+	@Size(max = 100, message = "Title cannot exceed 100 characters")
 	private String title;
 
-	@Column(name = "description", length = 1000)
+	@Size(max = 1000, message = "Description too long")
 	private String description;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status", nullable = false, length = 30)
+	@NotNull(message = "Status is required")
 	private TaskStatus status;
 }

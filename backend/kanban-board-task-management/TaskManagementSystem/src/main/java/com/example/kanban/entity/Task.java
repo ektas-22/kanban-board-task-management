@@ -10,8 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 @Table(name = "tasks")
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
@@ -30,7 +30,9 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(name = "title", nullable = false, length = 255)
+	@Column(name = "title", nullable = false, length = 100)
+	@NotBlank(message="Title required.")
+	@Size(max=100, message="Title cannot exceed 100 characters.")
 	private String title;
 
 	@Column(name = "description", length = 1000)
