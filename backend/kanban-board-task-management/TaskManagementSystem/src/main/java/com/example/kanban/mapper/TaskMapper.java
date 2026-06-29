@@ -1,13 +1,13 @@
 package com.example.kanban.mapper;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.TaskRequest;
+import com.example.kanban.dto.TaskResponse;
 import com.example.kanban.entity.Task;
 
 public class TaskMapper {
 
 	// DTO → Entity
-	public static Task toEntity(TaskRequestDto taskRequestDto) {
+	public static Task toEntity(TaskRequest taskRequestDto) {
 		Task task = new Task();
 		task.setTitle(taskRequestDto.getTitle());
 		task.setDescription(taskRequestDto.getDescription());
@@ -16,8 +16,8 @@ public class TaskMapper {
 	}
 
 	// Entity → Response DTO
-	public static TaskResponseDto toResponseDto(Task task) {
-		TaskResponseDto taskResponseDto = new TaskResponseDto();
+	public static TaskResponse toResponseDto(Task task) {
+		TaskResponse taskResponseDto = new TaskResponse();
 		taskResponseDto.setId(task.getId());
 		taskResponseDto.setTitle(task.getTitle());
 		taskResponseDto.setDescription(task.getDescription());
@@ -28,7 +28,7 @@ public class TaskMapper {
 	}
 
 	// Update existing entity from DTO
-	public static void updateEntity(Task task, TaskRequestDto taskRequestDto) {
+	public static void updateEntity(Task task, TaskRequest taskRequestDto) {
 		task.setTitle(taskRequestDto.getTitle());
 		task.setDescription(taskRequestDto.getDescription());
 		task.setStatus(taskRequestDto.getStatus());

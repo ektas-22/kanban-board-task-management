@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.TaskRequest;
+import com.example.kanban.dto.TaskResponse;
 import com.example.kanban.entity.Task;
 import com.example.kanban.entity.TaskStatus;
 import com.example.kanban.mapper.TaskMapper;
@@ -20,7 +20,7 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskRepository taskRepository;
 
 	@Override
-	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
+	public TaskResponse createTask(TaskRequest taskRequestDto) {
 		validateCreateTask(taskRequestDto);
 		Task task = TaskMapper.toEntity(taskRequestDto);
 		Task savedTask = taskRepository.save(task);
@@ -28,14 +28,14 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public List<TaskResponseDto> getAllTasks() {
+	public List<TaskResponse> getAllTasks() {
 		List<Task> taskList = taskRepository.findAll();
-		List<TaskResponseDto> taskResponseDtoList = taskList.stream().map(TaskMapper::toResponseDto).toList();
+		List<TaskResponse> taskResponseDtoList = taskList.stream().map(TaskMapper::toResponseDto).toList();
 		return taskResponseDtoList;
 	}
 
 	@Override
-	public TaskResponseDto getTaskById(Long id) {
+	public TaskResponse getTaskById(Long id) {
 		Task taskId = taskRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Task not found with the id: " + id));
 
@@ -43,7 +43,7 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public TaskResponseDto updateTask(Long id, TaskRequestDto task) {
+	public TaskResponse updateTask(Long id, TaskRequest task) {
 		
 		return null;
 	}
@@ -53,7 +53,7 @@ public class TaskServiceImpl implements TaskService {
 		taskRepository.deleteById(taskId);
 	}
 
-	private void validateCreateTask(TaskRequestDto taskRequestDto) {
+	private void validateCreateTask(TaskRequest taskRequestDto) {
 		String title = taskRequestDto.getTitle();
 		if (title == null || title.trim().isEmpty()) {
 			throw new IllegalArgumentException("Task title cannot be empty");

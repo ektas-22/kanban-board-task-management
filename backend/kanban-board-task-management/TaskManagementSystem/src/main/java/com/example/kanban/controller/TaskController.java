@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.TaskRequest;
+import com.example.kanban.dto.TaskResponse;
 import com.example.kanban.service.TaskService;
 
 import jakarta.validation.Valid;
@@ -28,32 +28,32 @@ public class TaskController {
 	private final TaskService taskService;
 
 	@PostMapping
-	public ResponseEntity<TaskResponseDto> createTask(@Valid @RequestBody TaskRequestDto taskRequestDto) {
-		TaskResponseDto taskResponseDto = taskService.createTask(taskRequestDto);
+	public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest taskRequestDto) {
+		TaskResponse taskResponseDto = taskService.createTask(taskRequestDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(taskResponseDto);
 	}
 
 	@GetMapping
-	public ResponseEntity<List<TaskResponseDto>> getAllTask() {
-		List<TaskResponseDto> taskResponseDto = taskService.getAllTasks();
+	public ResponseEntity<List<TaskResponse>> getAllTask() {
+		List<TaskResponse> taskResponseDto = taskService.getAllTasks();
 		return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
 	}
 
 	@GetMapping
-	public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable Long taskId) {
-		TaskResponseDto task = taskService.getTaskById(taskId);
+	public ResponseEntity<TaskResponse> getTaskById(@PathVariable Long taskId) {
+		TaskResponse task = taskService.getTaskById(taskId);
 		return ResponseEntity.ok(task);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long taskId,
-			@Valid @RequestBody TaskRequestDto taskRequestDto) {
+	public ResponseEntity<TaskResponse> updateTask(@PathVariable Long taskId,
+			@Valid @RequestBody TaskRequest taskRequestDto) {
 		
 		return null;
 	}
 
 	@DeleteMapping
-	public ResponseEntity<TaskResponseDto> deleteTask(@PathVariable Long taskId) {
+	public ResponseEntity<TaskResponse> deleteTask(@PathVariable Long taskId) {
 		taskService.deleteTask(taskId);
 		return ResponseEntity.noContent().build();
 	}
