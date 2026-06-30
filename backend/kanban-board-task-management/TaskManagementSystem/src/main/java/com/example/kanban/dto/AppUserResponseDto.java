@@ -11,11 +11,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class AppUserResponseDto {
 
 	private Long id;
 	private String name;
 	private String email;
-	private String password;
 	private Role role;
 }

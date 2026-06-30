@@ -32,7 +32,7 @@ import lombok.Setter;
 @Setter
 @Builder
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(columnNames = "email") })
-public class User {
+public class AppUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,7 +49,7 @@ public class User {
 	private String email;
 
 	@NotBlank(message = "Password cannot be empty.")
-	@Size(min = 6, message = "NPassword must be at least 6 characters.")
+	@Size(min = 6, message = "Password must be at least 6 characters.")
 	@Column(nullable = false)
 	private String password;
 
@@ -62,7 +62,7 @@ public class User {
 
 	// -------- RELATIONSHIP --------
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Task> tasks;
 
 	// -------- AUDIT FIELDS --------

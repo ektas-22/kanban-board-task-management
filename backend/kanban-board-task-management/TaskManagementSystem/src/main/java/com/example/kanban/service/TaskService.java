@@ -2,18 +2,21 @@ package com.example.kanban.service;
 
 import java.util.List;
 
-import com.example.kanban.dto.TaskRequest;
-import com.example.kanban.dto.TaskResponse;
+import com.example.kanban.dto.TaskRequestDto;
+import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.entity.TaskStatus;
 
 public interface TaskService {
-	TaskResponse createTask(TaskRequest task);
+	TaskResponseDto createTask(TaskRequestDto taskRequestDto);
 
-	List<TaskResponse> getAllTasks();
+	List<TaskResponseDto> getAllTasks();
 
-	TaskResponse getTaskById(Long id);
+	TaskResponseDto getTaskById(Long id);
 
-	TaskResponse updateTask(Long id, TaskRequest task);
+	TaskResponseDto updateTask(Long id, TaskRequestDto taskRequestDto);
 
+	TaskResponseDto updateTaskStatus(Long id, TaskStatus status);
+	
 	void deleteTask(Long id);
 
 }

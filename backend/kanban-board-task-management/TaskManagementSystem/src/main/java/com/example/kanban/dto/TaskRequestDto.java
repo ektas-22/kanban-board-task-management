@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskRequest {
+public class TaskRequestDto {
 
 	@NotBlank(message = "Title cannot be empty")
 	@Size(max = 100, message = "Title cannot exceed 100 characters")

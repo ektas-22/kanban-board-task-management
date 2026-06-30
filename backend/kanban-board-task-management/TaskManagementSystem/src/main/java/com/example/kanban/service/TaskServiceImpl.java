@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.kanban.dto.TaskRequest;
-import com.example.kanban.dto.TaskResponse;
+import com.example.kanban.dto.TaskRequestDto;
+import com.example.kanban.dto.TaskResponseDto;
 import com.example.kanban.entity.Task;
 import com.example.kanban.entity.TaskStatus;
+import com.example.kanban.exception.ResourceNotFoundException;
 import com.example.kanban.mapper.TaskMapper;
 import com.example.kanban.repository.TaskRepository;
 
@@ -20,50 +21,68 @@ public class TaskServiceImpl implements TaskService {
 	private final TaskRepository taskRepository;
 
 	@Override
-	public TaskResponse createTask(TaskRequest taskRequestDto) {
-		validateCreateTask(taskRequestDto);
+	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
+		validateTask(taskRequestDto);
 		Task task = TaskMapper.toEntity(taskRequestDto);
 		Task savedTask = taskRepository.save(task);
 		return TaskMapper.toResponseDto(savedTask);
 	}
 
 	@Override
-	public List<TaskResponse> getAllTasks() {
-		List<Task> taskList = taskRepository.findAll();
-		List<TaskResponse> taskResponseDtoList = taskList.stream().map(TaskMapper::toResponseDto).toList();
-		return taskResponseDtoList;
+	public List<TaskResponseDto> getAllTasks() {
+		return taskRepository.findAll().stream().map(TaskMapper::toResponseDto).toList();
+
 	}
 
 	@Override
-	public TaskResponse getTaskById(Long id) {
+	public TaskResponseDto getTaskById(Long id) {
 		Task taskId = taskRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("Task not found with the id: " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id: " + id));
 
 		return TaskMapper.toResponseDto(taskId);
 	}
 
 	@Override
-	public TaskResponse updateTask(Long id, TaskRequest task) {
-		
-		return null;
+	public TaskResponseDto updateTask(Long id, TaskRequestDto taskRequestDto) {
+		Task existingTask = taskRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id: " + id));
+
+		validateTask(taskRequestDto);
+		TaskMapper.updateEntity(existingTask, taskRequestDto);
+		Task updatedTask = taskRepository.save(existingTask);
+		return TaskMapper.toResponseDto(updatedTask);
 	}
 
 	@Override
-	public void deleteTask(Long taskId) {
-		taskRepository.deleteById(taskId);
+	public TaskResponseDto updateTaskStatus(Long id, TaskStatus status) {
+		Task task = taskRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with this id : " + id));
+		TaskMapper.updateStatus(task, status);
+		Task updatedTaskStatus = taskRepository.save(task);
+		return TaskMapper.toResponseDto(updatedTaskStatus);
 	}
 
-	private void validateCreateTask(TaskRequest taskRequestDto) {
-		String title = taskRequestDto.getTitle();
-		if (title == null || title.trim().isEmpty()) {
+	@Override
+	public void deleteTask(Long id) {
+		Task task = taskRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id: " + id));
+		taskRepository.delete(task);
+	}
+
+	private void validateTask(TaskRequestDto taskRequestDto) {
+		if (taskRequestDto.getTitle() == null || taskRequestDto.getTitle().trim().isEmpty()) {
 			throw new IllegalArgumentException("Task title cannot be empty");
 		}
-		if (title.length() > 100) {
+		if (taskRequestDto.getTitle().length() > 100) {
 			throw new IllegalArgumentException("Task title cannot  exceed 100  characters");
 		}
-		if (taskRequestDto.getStatus() == null) {
-			taskRequestDto.setStatus(TaskStatus.TODO);
+		if (taskRequestDto.getDescription() != null && taskRequestDto.getDescription().length() > 1000) {
+			throw new IllegalArgumentException("Description too long");
 		}
-
 	}
+
+//	private Task buildTask(TaskRequestDto dto) {
+//		return TaskMapper.toEntity(dto);
+//	}
+
 }
