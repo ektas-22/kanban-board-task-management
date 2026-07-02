@@ -80,9 +80,4 @@ public class TaskServiceImpl implements TaskService {
 			throw new IllegalArgumentException("Description too long");
 		}
 	}
-
-//	private Task buildTask(TaskRequestDto dto) {
-//		return TaskMapper.toEntity(dto);
-//	}
-
 }
