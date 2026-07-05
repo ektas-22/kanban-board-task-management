@@ -39,20 +39,20 @@ public class TaskController {
 		return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
 	}
 
-	@GetMapping
+	@GetMapping("/{id}")
 	public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable Long taskId) {
-		TaskResponseDto task = taskService.getTaskById(taskId);
-		return ResponseEntity.ok(task);
+		TaskResponseDto taskResponseDto = taskService.getTaskById(taskId);
+		return ResponseEntity.ok(taskResponseDto);
 	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<TaskResponseDto> updateTask(@PathVariable Long taskId,
 			@Valid @RequestBody TaskRequestDto taskRequestDto) {
-		
-		return null;
+		TaskResponseDto taskResponseDto = taskService.updateTask(taskId, taskRequestDto);
+		return ResponseEntity.status(HttpStatus.CREATED).body(taskResponseDto);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	public ResponseEntity<TaskResponseDto> deleteTask(@PathVariable Long taskId) {
 		taskService.deleteTask(taskId);
 		return ResponseEntity.noContent().build();
