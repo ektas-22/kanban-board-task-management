@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.task.TaskRequestDto;
+import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.entity.Task;
 import com.example.kanban.entity.TaskStatus;
 import com.example.kanban.exception.ResourceNotFoundException;
 import com.example.kanban.mapper.TaskMapper;
+import com.example.kanban.repository.AppUserRepository;
 import com.example.kanban.repository.TaskRepository;
+import com.example.kanban.security.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,17 +21,26 @@ import lombok.RequiredArgsConstructor;
 public class TaskServiceImpl implements TaskService {
 
 	private final TaskRepository taskRepository;
+	private final AppUserRepository appUserRepository;
 
 	@Override
 	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
+		String username = SecurityUtil.getCurrentUsername();
+		var user = appUserRepository.findByUserName(username)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
 		validateTask(taskRequestDto);
 		Task task = TaskMapper.toEntity(taskRequestDto);
+		task.setAppUser(user);
+		task.setStatus(TaskStatus.TODO);
 		Task savedTask = taskRepository.save(task);
 		return TaskMapper.toResponseDto(savedTask);
 	}
 
 	@Override
 	public List<TaskResponseDto> getAllTasks() {
+		String username = SecurityUtil.getCurrentUsername();
+		var user = appUserRepository.findByUserName(username)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
 		return taskRepository.findAll().stream().map(TaskMapper::toResponseDto).toList();
 
 	}

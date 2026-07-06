@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.task.TaskRequestDto;
+import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.service.TaskService;
 
 import jakarta.validation.Valid;

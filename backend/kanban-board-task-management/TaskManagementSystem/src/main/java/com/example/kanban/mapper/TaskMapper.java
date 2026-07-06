@@ -1,7 +1,7 @@
 package com.example.kanban.mapper;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.task.TaskRequestDto;
+import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.entity.Task;
 import com.example.kanban.entity.TaskStatus;
 

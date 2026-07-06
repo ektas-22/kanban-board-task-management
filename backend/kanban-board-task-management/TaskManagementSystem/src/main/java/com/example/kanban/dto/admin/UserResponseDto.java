@@ -1,4 +1,4 @@
-package com.example.kanban.dto;
+package com.example.kanban.dto.admin;
 
 import com.example.kanban.entity.Role;
 
@@ -7,14 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUserResponseDto {
+@Getter
+@Setter
+public class UserResponseDto {
 
 	private Long id;
-	private String name;
+	private String username;
 	private String email;
 	private Role role;
 }

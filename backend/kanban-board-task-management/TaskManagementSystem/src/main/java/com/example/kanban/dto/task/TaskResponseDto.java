@@ -1,4 +1,4 @@
-package com.example.kanban.dto;
+package com.example.kanban.dto.task;
 
 import java.time.LocalDateTime;
 

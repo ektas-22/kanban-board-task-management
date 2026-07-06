@@ -1,4 +1,4 @@
-package com.example.kanban.dto;
+package com.example.kanban.dto.task;
 
 import com.example.kanban.entity.TaskStatus;
 
@@ -23,6 +23,9 @@ public class TaskRequestDto {
 	@Size(max = 1000, message = "Description too long")
 	private String description;
 
-	@NotNull(message = "Status is required")
-	private TaskStatus status;
+//	@NotNull(message = "Status is required")
+//	private TaskStatus status;
+//
+//	@NotNull(message = "Id cannot be null")
+//	private Long userId;
 }

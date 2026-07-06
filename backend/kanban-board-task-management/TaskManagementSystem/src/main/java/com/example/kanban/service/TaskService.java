@@ -2,8 +2,8 @@ package com.example.kanban.service;
 
 import java.util.List;
 
-import com.example.kanban.dto.TaskRequestDto;
-import com.example.kanban.dto.TaskResponseDto;
+import com.example.kanban.dto.task.TaskRequestDto;
+import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.entity.TaskStatus;
 
 public interface TaskService {
