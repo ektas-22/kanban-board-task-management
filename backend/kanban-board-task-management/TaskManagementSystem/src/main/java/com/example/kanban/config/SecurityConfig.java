@@ -1,5 +1,9 @@
 package com.example.kanban.config;
 
+import com.example.kanban.security.JwtAuthenticationFilter;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,62 +19,52 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.example.kanban.security.JwtAuthenticationFilter;
-
 @Configuration
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final JwtAuthenticationFilter jwtAuthFilter;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	
 	private final UserDetailsService userDetailsService;
 
-	public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, UserDetailsService userDetailsService) {
-		this.jwtAuthFilter = jwtAuthFilter;
-		this.userDetailsService = userDetailsService;
-	}
-
-	// 1. Security Filter Chain
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
-		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable()).authorizeHttpRequests(auth -> auth
-
-				// PUBLIC APIs
-				.requestMatchers("/auth/**").permitAll()
-
-				// ADMIN ONLY APIs
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-
-				// Everything else requires authentication
-				.anyRequest().authenticated())
+		http
+				// Disable CSRF because JWT is stateless
+				.csrf(csrf -> csrf.disable())
+				// No HTTP Session
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				// API Authorization Rules
+				.authorizeHttpRequests(auth -> auth
+						// Public APIs
+						.requestMatchers("/auth/**").permitAll()
+						// Swagger (optional)
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+						// Admin APIs
+						.requestMatchers("/admin/**").hasRole("ADMIN")
+						// Everything else
+						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 
-	// 2. Authentication Provider
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
-
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-	    authProvider.setUserDetailsService(userDetailsService);
-	    authProvider.setPasswordEncoder(passwordEncoder());
-
-	    return authProvider;
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder());
+		return provider;
 	}
 
-	// 3. Password Encoder
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	// 4. Authentication Manager
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+		return configuration.getAuthenticationManager();
 	}
+
 }

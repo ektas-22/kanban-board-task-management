@@ -25,8 +25,8 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
-		String username = SecurityUtil.getCurrentUsername();
-		var user = appUserRepository.findByUserName(username)
+		String username = SecurityUtil.getCurrentUserEmail();
+		var user = appUserRepository.findByEmail(username)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
 		validateTask(taskRequestDto);
 		Task task = TaskMapper.toEntity(taskRequestDto);
@@ -38,8 +38,8 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public List<TaskResponseDto> getAllTasks() {
-		String username = SecurityUtil.getCurrentUsername();
-		var user = appUserRepository.findByUserName(username)
+		String username = SecurityUtil.getCurrentUserEmail();
+		var user = appUserRepository.findByEmail(username)
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
 		return taskRepository.findAll().stream().map(TaskMapper::toResponseDto).toList();
 
