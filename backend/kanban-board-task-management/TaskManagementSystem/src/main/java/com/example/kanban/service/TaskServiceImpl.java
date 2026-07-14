@@ -2,10 +2,13 @@ package com.example.kanban.service;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.example.kanban.dto.task.TaskRequestDto;
 import com.example.kanban.dto.task.TaskResponseDto;
+import com.example.kanban.entity.AppUser;
 import com.example.kanban.entity.Task;
 import com.example.kanban.entity.TaskStatus;
 import com.example.kanban.exception.ResourceNotFoundException;
@@ -47,10 +50,10 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public TaskResponseDto getTaskById(Long id) {
-		Task taskId = taskRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id: " + id));
-
-		return TaskMapper.toResponseDto(taskId);
+		AppUser currentUser = getCurrentUser();
+		Task task = taskRepository.findByIdAndUser(id, currentUser)
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+		return TaskMapper.toResponseDto(task);
 	}
 
 	@Override
@@ -90,5 +93,14 @@ public class TaskServiceImpl implements TaskService {
 		if (taskRequestDto.getDescription() != null && taskRequestDto.getDescription().length() > 1000) {
 			throw new IllegalArgumentException("Description too long");
 		}
+	}
+
+	private AppUser getCurrentUser() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		String email = authentication.getName();
+
+		return appUserRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 	}
 }
