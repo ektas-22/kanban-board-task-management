@@ -3,7 +3,6 @@ package com.example.kanban.mapper;
 import com.example.kanban.dto.task.TaskRequestDto;
 import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.entity.Task;
-import com.example.kanban.entity.TaskStatus;
 
 public class TaskMapper {
 
@@ -12,29 +11,18 @@ public class TaskMapper {
 		Task task = new Task();
 		task.setTitle(taskRequestDto.getTitle());
 		task.setDescription(taskRequestDto.getDescription());
-		task.setStatus(TaskStatus.TODO); // default for Kanban
 		return task;
 	}
 
 	// Entity → Response DTO
 	public static TaskResponseDto toResponseDto(Task task) {
-		TaskResponseDto taskResponseDto = new TaskResponseDto();
-		taskResponseDto.setId(task.getId());
-		taskResponseDto.setTitle(task.getTitle());
-		taskResponseDto.setDescription(task.getDescription());
-		taskResponseDto.setStatus(task.getStatus());
-		taskResponseDto.setCreatedAt(task.getCreatedAt());
-		taskResponseDto.setUpdatedAt(task.getUpdatedAt());
-		return taskResponseDto;
+		return new TaskResponseDto(task.getId(), task.getTitle(), task.getDescription(), task.getStatus(),
+				task.getCreatedAt(), task.getUpdatedAt());
 	}
 
 	// Update existing entity from DTO
 	public static void updateEntity(Task task, TaskRequestDto taskRequestDto) {
 		task.setTitle(taskRequestDto.getTitle());
 		task.setDescription(taskRequestDto.getDescription());
-	}
-
-	public static void updateStatus(Task task, TaskStatus status) {
-		task.setStatus(status);
 	}
 }

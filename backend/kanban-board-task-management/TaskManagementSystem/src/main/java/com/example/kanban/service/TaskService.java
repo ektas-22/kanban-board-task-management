@@ -4,12 +4,12 @@ import java.util.List;
 
 import com.example.kanban.dto.task.TaskRequestDto;
 import com.example.kanban.dto.task.TaskResponseDto;
-import com.example.kanban.entity.TaskStatus;
+import com.example.kanban.enums.TaskStatus;
 
 public interface TaskService {
 	TaskResponseDto createTask(TaskRequestDto taskRequestDto);
 
-	List<TaskResponseDto> getAllTasks();
+	List<TaskResponseDto> getMyTask();
 
 	TaskResponseDto getTaskById(Long id);
 

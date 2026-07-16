@@ -2,6 +2,8 @@ package com.example.kanban.entity;
 
 import java.time.LocalDateTime;
 
+import com.example.kanban.enums.TaskStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

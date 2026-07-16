@@ -2,7 +2,7 @@ package com.example.kanban.dto.task;
 
 import java.time.LocalDateTime;
 
-import com.example.kanban.entity.TaskStatus;
+import com.example.kanban.enums.TaskStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

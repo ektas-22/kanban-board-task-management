@@ -1,6 +1,8 @@
-package com.example.kanban.dto.admin;
+package com.example.kanban.dto.appuser;
 
-import com.example.kanban.entity.Role;
+import java.util.List;
+
+import com.example.kanban.dto.task.TaskResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,10 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserResponseDto {
+public class UserWithTaskDto {
 
 	private Long id;
 	private String username;
-	private String email;
-	private Role role;
+	private List<TaskResponseDto> tasks;
 }

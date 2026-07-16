@@ -1,17 +1,19 @@
 package com.example.kanban.dto.task;
 
-import com.example.kanban.entity.TaskStatus;
+import com.example.kanban.enums.TaskStatus;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskStatusUpdateDto {
 
-	private TaskStatus status;
+    @NotNull(message = "Status is required")
+    private TaskStatus status;
 }

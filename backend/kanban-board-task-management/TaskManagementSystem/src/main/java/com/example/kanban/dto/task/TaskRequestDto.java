@@ -1,9 +1,6 @@
 package com.example.kanban.dto.task;
 
-import com.example.kanban.entity.TaskStatus;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,9 +20,4 @@ public class TaskRequestDto {
 	@Size(max = 1000, message = "Description too long")
 	private String description;
 
-//	@NotNull(message = "Status is required")
-//	private TaskStatus status;
-//
-//	@NotNull(message = "Id cannot be null")
-//	private Long userId;
 }

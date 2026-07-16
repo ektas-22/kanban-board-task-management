@@ -10,7 +10,7 @@ import com.example.kanban.dto.auth.AuthResponseDto;
 import com.example.kanban.dto.auth.LoginRequestDto;
 import com.example.kanban.dto.auth.RegisterRequestDto;
 import com.example.kanban.entity.AppUser;
-import com.example.kanban.entity.Role;
+import com.example.kanban.enums.Role;
 import com.example.kanban.repository.AppUserRepository;
 import com.example.kanban.security.JwtService;
 

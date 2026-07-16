@@ -3,6 +3,8 @@ package com.example.kanban.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.kanban.enums.Role;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

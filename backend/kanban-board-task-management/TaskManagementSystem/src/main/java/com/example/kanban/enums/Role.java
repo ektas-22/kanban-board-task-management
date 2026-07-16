@@ -1,4 +1,4 @@
-package com.example.kanban.entity;
+package com.example.kanban.enums;
 
 public enum Role {
 	USER,

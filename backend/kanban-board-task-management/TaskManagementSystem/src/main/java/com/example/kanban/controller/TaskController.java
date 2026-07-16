@@ -35,7 +35,7 @@ public class TaskController {
 
 	@GetMapping
 	public ResponseEntity<List<TaskResponseDto>> getAllTask() {
-		List<TaskResponseDto> taskResponseDto = taskService.getAllTasks();
+		List<TaskResponseDto> taskResponseDto = taskService.getMyTask();
 		return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
 	}
 

@@ -1,6 +1,6 @@
 package com.example.kanban.dto.auth;
 
-import com.example.kanban.entity.Role;
+import com.example.kanban.enums.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
