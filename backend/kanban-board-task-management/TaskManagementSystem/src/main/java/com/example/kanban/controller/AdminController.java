@@ -27,6 +27,7 @@ public class AdminController {
 
     /**
      * Get all registered users.
+     * @return
      */
     @GetMapping("/users")
     public ResponseEntity<List<UserResponseDto>> getAllUsers() {
@@ -35,6 +36,8 @@ public class AdminController {
 
     /**
      * Get a specific user along with all assigned tasks.
+     * @param userId
+     * @return
      */
     @GetMapping("/users/{userId}")
     public ResponseEntity<com.example.kanban.dto.appuser.UserResponseDto> getUserById(
@@ -45,6 +48,8 @@ public class AdminController {
 
     /**
      * Delete a user.
+     * @param userId
+     * @return
      */
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<String> deleteUser(
@@ -56,6 +61,8 @@ public class AdminController {
 
     /**
      * Delete any task.
+     * @param taskId
+     * @return
      */
     @DeleteMapping("/tasks/{taskId}")
     public ResponseEntity<String> deleteTask(
@@ -69,6 +76,9 @@ public class AdminController {
      * Update user role.
      * Example:
      * PUT /api/admin/users/1/role?role=ADMIN
+     * @param userId
+     * @param role
+     * @return
      */
     @PutMapping("/users/{userId}/role")
     public ResponseEntity<String> updateUserRole(
@@ -81,6 +91,7 @@ public class AdminController {
 
     /**
      * Total users count.
+     * @return
      */
     @GetMapping("/stats/users")
     public ResponseEntity<Long> getTotalUsers() {
@@ -89,6 +100,7 @@ public class AdminController {
 
     /**
      * Total tasks count.
+     * @return
      */
     @GetMapping("/stats/tasks")
     public ResponseEntity<Long> getTotalTasks() {
