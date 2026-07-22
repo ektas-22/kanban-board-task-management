@@ -28,7 +28,7 @@ public class TaskServiceImpl implements TaskService {
 	private final AppUserRepository appUserRepository;
 
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
 		AppUser currentUser = getCurrentUser();
 		Task task = TaskMapper.toEntity(taskRequestDto);
@@ -40,7 +40,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TaskResponseDto> getMyTask() {
+	public List<TaskResponseDto> getMyTasks() {
 		AppUser currentUser = getCurrentUser();
 		return taskRepository.findByAppUser(currentUser).stream().map(TaskMapper::toResponseDto).toList();
 	}

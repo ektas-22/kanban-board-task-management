@@ -9,7 +9,7 @@ import com.example.kanban.enums.TaskStatus;
 public interface TaskService {
 	TaskResponseDto createTask(TaskRequestDto taskRequestDto);
 
-	List<TaskResponseDto> getMyTask();
+	List<TaskResponseDto> getMyTasks();
 
 	TaskResponseDto getTaskById(Long id);
 
