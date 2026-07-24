@@ -1,20 +1,24 @@
 package com.example.kanban.dto.appuser;
 
+import java.time.LocalDateTime;
+
 import com.example.kanban.enums.Role;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class UserResponseDto {
 
-	private Long id;
-	private String username;
-	private String email;
-	private Role role;
+	  private Long id;
+	    private String name;
+	    private String email;
+	    private Role role;
+	    private LocalDateTime createdAt;
+	    private LocalDateTime updatedAt;
 }

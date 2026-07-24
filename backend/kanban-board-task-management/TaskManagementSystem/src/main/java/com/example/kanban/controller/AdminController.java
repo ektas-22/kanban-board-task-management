@@ -23,87 +23,42 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
-    private final AdminService adminService;
+	private final AdminService adminService;
 
-    /**
-     * Get all registered users.
-     * @return
-     */
-    @GetMapping("/users")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        return ResponseEntity.ok(adminService.getAllUsers());
-    }
+	/**
+	 * Get all registered users.
+	 * 
+	 * @return
+	 */
+	@GetMapping("/users")
+	public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+		return ResponseEntity.ok(adminService.getAllUsers());
+	}
 
-    /**
-     * Get a specific user along with all assigned tasks.
-     * @param userId
-     * @return
-     */
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<com.example.kanban.dto.appuser.UserResponseDto> getUserById(
-            @PathVariable Long userId) {
+	/**
+	 * Delete a user.
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
 
-        return ResponseEntity.ok(adminService.getUserWithTasks(userId));
-    }
+		adminService.deleteUser(userId);
+		return ResponseEntity.ok("User deleted successfully.");
+	}
 
-    /**
-     * Delete a user.
-     * @param userId
-     * @return
-     */
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<String> deleteUser(
-            @PathVariable Long userId) {
+	/**
+	 * Delete any task.
+	 * 
+	 * @param taskId
+	 * @return
+	 */
+	@DeleteMapping("/tasks/{taskId}")
+	public ResponseEntity<String> deleteTask(@PathVariable Long taskId) {
 
-        adminService.deleteUser(userId);
-        return ResponseEntity.ok("User deleted successfully.");
-    }
+		adminService.deleteTask(taskId);
+		return ResponseEntity.ok("Task deleted successfully.");
+	}
 
-    /**
-     * Delete any task.
-     * @param taskId
-     * @return
-     */
-    @DeleteMapping("/tasks/{taskId}")
-    public ResponseEntity<String> deleteTask(
-            @PathVariable Long taskId) {
-
-        adminService.deleteTask(taskId);
-        return ResponseEntity.ok("Task deleted successfully.");
-    }
-
-    /**
-     * Update user role.
-     * Example:
-     * PUT /api/admin/users/1/role?role=ADMIN
-     * @param userId
-     * @param role
-     * @return
-     */
-    @PutMapping("/users/{userId}/role")
-    public ResponseEntity<String> updateUserRole(
-            @PathVariable Long userId,
-            @RequestParam String role) {
-
-        adminService.updateUserRole(userId, role);
-        return ResponseEntity.ok("User role updated successfully.");
-    }
-
-    /**
-     * Total users count.
-     * @return
-     */
-    @GetMapping("/stats/users")
-    public ResponseEntity<Long> getTotalUsers() {
-        return ResponseEntity.ok(adminService.getTotalUsers());
-    }
-
-    /**
-     * Total tasks count.
-     * @return
-     */
-    @GetMapping("/stats/tasks")
-    public ResponseEntity<Long> getTotalTasks() {
-        return ResponseEntity.ok(adminService.getTotalTasks());
-    }
 }

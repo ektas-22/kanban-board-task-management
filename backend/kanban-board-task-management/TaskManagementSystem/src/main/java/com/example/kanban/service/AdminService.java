@@ -3,20 +3,22 @@ package com.example.kanban.service;
 import java.util.List;
 
 import com.example.kanban.dto.appuser.UserResponseDto;
+import com.example.kanban.dto.task.TaskResponseDto;
 
 public interface AdminService {
 
-    List<UserResponseDto> getAllUsers();
+	// User Management
+	List<UserResponseDto> getAllUsers();
 
-    UserResponseDto getUserWithTasks(Long userId);
+	UserResponseDto getUserById(Long userId);
 
-    void deleteUser(Long userId);
+	void deleteUser(Long userId);
 
-    void deleteTask(Long taskId);
+	// Task Management
+	List<TaskResponseDto> getAllTask();
 
-    void updateUserRole(Long userId, String role);
+	TaskResponseDto getTaskBydId(Long taskId);
 
-    Long getTotalUsers();
+	void deleteTask(Long taskId);
 
-    Long getTotalTasks();
 }
