@@ -3,6 +3,8 @@ package com.example.kanban.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.kanban.entity.AppUser;
@@ -19,4 +21,6 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	List<Task> findByAppUser(AppUser appUser);
 
 	Optional<Task> findByIdAndAppUser(Long id, AppUser appUser);
+	
+	Page<Task> findByAppUser(AppUser appUser, Pageable pageable);
 }

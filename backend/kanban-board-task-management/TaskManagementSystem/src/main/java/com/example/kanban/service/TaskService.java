@@ -1,6 +1,6 @@
 package com.example.kanban.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import com.example.kanban.dto.task.TaskRequestDto;
 import com.example.kanban.dto.task.TaskResponseDto;
@@ -9,7 +9,7 @@ import com.example.kanban.enums.TaskStatus;
 public interface TaskService {
 	TaskResponseDto createTask(TaskRequestDto taskRequestDto);
 
-	List<TaskResponseDto> getMyTasks();
+	Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy);
 
 	TaskResponseDto getTaskById(Long id);
 

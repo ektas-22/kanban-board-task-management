@@ -1,7 +1,9 @@
 package com.example.kanban.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -40,9 +42,13 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<TaskResponseDto> getMyTasks() {
+	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy) {
 		AppUser currentUser = getCurrentUser();
-		return taskRepository.findByAppUser(currentUser).stream().map(TaskMapper::toResponseDto).toList();
+		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		Page<Task> taskPage = taskRepository.findByAppUser(currentUser, pageable);
+		return taskPage.map(TaskMapper::toResponseDto);
+
+//		return taskRepository.findByAppUser(currentUser).stream().map(TaskMapper::toResponseDto).toList();
 	}
 
 	@Override
