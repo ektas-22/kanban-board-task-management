@@ -35,9 +35,9 @@ public class TaskController {
 
 	@GetMapping
 	public ResponseEntity<Page<TaskResponseDto>> getAllTasks(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy) {
-
-		return ResponseEntity.ok(taskService.getMyTasks(page, size, sortBy));
+			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
+			@RequestParam(defaultValue = "desc") String direction) {
+		return ResponseEntity.ok(taskService.getMyTasks(page, size, sortBy, direction));
 	}
 
 	@GetMapping("/{taskId}")

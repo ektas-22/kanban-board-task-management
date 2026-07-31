@@ -42,13 +42,12 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy) {
+	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy, String direction) {
 		AppUser currentUser = getCurrentUser();
-		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		Sort sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Task> taskPage = taskRepository.findByAppUser(currentUser, pageable);
 		return taskPage.map(TaskMapper::toResponseDto);
-
-//		return taskRepository.findByAppUser(currentUser).stream().map(TaskMapper::toResponseDto).toList();
 	}
 
 	@Override
