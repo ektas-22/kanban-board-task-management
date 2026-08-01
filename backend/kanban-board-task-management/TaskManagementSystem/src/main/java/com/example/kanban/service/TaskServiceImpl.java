@@ -42,11 +42,22 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy, String direction) {
+	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy, String direction, TaskStatus status,
+			String keyword) {
 		AppUser currentUser = getCurrentUser();
 		Sort sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Task> taskPage = taskRepository.findByAppUser(currentUser, pageable);
+		Page<Task> taskPage;
+		if (status != null && keyword != null && !keyword.isBlank()) {
+			taskPage = taskRepository.findByAppUserAndStatusAndTitleContainingIgnoreCase(currentUser, status, keyword,
+					pageable);
+		} else if (status != null) {
+			taskPage = taskRepository.findByAppUserAndStatus(currentUser, status, pageable);
+		} else if (keyword != null && !keyword.isBlank()) {
+			taskPage = taskRepository.findByAppUserAndTitleContainingIgnoreCase(currentUser, keyword, pageable);
+		} else {
+			taskPage = taskRepository.findByAppUser(currentUser, pageable);
+		}
 		return taskPage.map(TaskMapper::toResponseDto);
 	}
 
@@ -90,7 +101,7 @@ public class TaskServiceImpl implements TaskService {
 
 	private Task getTaskForCurrentUser(Long id) {
 		AppUser currentUser = getCurrentUser();
-		return taskRepository.findByIdAndUser(id, currentUser)
+		return taskRepository.findByIdAndAppUser(id, currentUser)
 				.orElseThrow(() -> new ResourceNotFoundException("Task not found."));
 	}
 }

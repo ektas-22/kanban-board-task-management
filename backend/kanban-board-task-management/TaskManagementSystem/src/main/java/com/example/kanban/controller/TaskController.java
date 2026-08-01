@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.kanban.dto.task.TaskRequestDto;
 import com.example.kanban.dto.task.TaskResponseDto;
+import com.example.kanban.enums.TaskStatus;
 import com.example.kanban.service.TaskService;
 
 import jakarta.validation.Valid;
@@ -36,8 +37,9 @@ public class TaskController {
 	@GetMapping
 	public ResponseEntity<Page<TaskResponseDto>> getAllTasks(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
-			@RequestParam(defaultValue = "desc") String direction) {
-		return ResponseEntity.ok(taskService.getMyTasks(page, size, sortBy, direction));
+			@RequestParam(defaultValue = "desc") String direction, @RequestParam(required = false) TaskStatus status,
+			@RequestParam(required = false) String keyword) {
+		return ResponseEntity.ok(taskService.getMyTasks(page, size, sortBy, direction, status, keyword));
 	}
 
 	@GetMapping("/{taskId}")
