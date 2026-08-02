@@ -1,4 +1,4 @@
-package com.example.kanban.dto.appuser;
+package com.example.kanban.dto.user;
 
 import java.time.LocalDateTime;
 
@@ -15,10 +15,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResponseDto {
 
-	  private Long id;
-	    private String name;
-	    private String email;
-	    private Role role;
-	    private LocalDateTime createdAt;
-	    private LocalDateTime updatedAt;
+	private Long id;
+	private String name;
+	private String email;
+	private Role role;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 }

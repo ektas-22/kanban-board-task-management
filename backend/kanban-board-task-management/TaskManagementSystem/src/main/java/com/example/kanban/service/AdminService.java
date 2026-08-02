@@ -2,8 +2,9 @@ package com.example.kanban.service;
 
 import org.springframework.data.domain.Page;
 
-import com.example.kanban.dto.appuser.UserResponseDto;
+import com.example.kanban.dto.admin.AdminDashboardResponseDto;
 import com.example.kanban.dto.task.TaskResponseDto;
+import com.example.kanban.dto.user.UserResponseDto;
 
 public interface AdminService {
 
@@ -20,5 +21,8 @@ public interface AdminService {
 	TaskResponseDto getTaskBydId(Long taskId);
 
 	void deleteTask(Long taskId);
+	
+	//Dash board
+	AdminDashboardResponseDto getDashboard();
 
 }

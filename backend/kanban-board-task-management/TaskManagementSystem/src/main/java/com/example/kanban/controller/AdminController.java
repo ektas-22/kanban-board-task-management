@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.kanban.dto.appuser.UserResponseDto;
 import com.example.kanban.dto.task.TaskResponseDto;
+import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.service.AdminService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,17 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
+//	User Management
+//	GET /admin/users
+//	GET /admin/users/{id}
+//	DELETE /admin/users/{id}
+//	Task Management
+//	GET /admin/tasks
+//	GET /admin/tasks/{id}
+//	DELETE /admin/tasks/{id}
+//	Dashboard -
+//	{ totalUsers, totalTasks, completedTasks, todoTasks, inProgressTasks}
+//GET /admin/dashboard
 
 	/**
 	 * 
@@ -37,6 +48,11 @@ public class AdminController {
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
 			@RequestParam(defaultValue = "desc") String direction) {
 		return ResponseEntity.ok(adminService.getAllUsers(page, size, direction, direction));
+	}
+
+	@GetMapping("/users/{userId}")
+	public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
+		return ResponseEntity.ok(adminService.getUserById(userId));
 	}
 
 	/**
@@ -62,6 +78,11 @@ public class AdminController {
 	public ResponseEntity<Page<TaskResponseDto>> getAllTasks(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "desc") String direction) {
 		return ResponseEntity.ok(adminService.getAllTasks(page, size, direction, direction));
+	}
+
+	@GetMapping("/tasks/{taskId}")
+	public ResponseEntity<TaskResponseDto> getTask(@PathVariable Long taskId) {
+		return ResponseEntity.ok(adminService.getTaskBydId(taskId));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package com.example.kanban.mapper;
 
-import com.example.kanban.dto.appuser.UserResponseDto;
+import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.entity.AppUser;
 
 public class UserMapper {
