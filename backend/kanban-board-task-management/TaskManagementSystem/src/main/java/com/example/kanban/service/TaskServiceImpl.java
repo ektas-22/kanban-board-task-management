@@ -4,8 +4,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +14,8 @@ import com.example.kanban.entity.Task;
 import com.example.kanban.enums.TaskStatus;
 import com.example.kanban.exception.ResourceNotFoundException;
 import com.example.kanban.mapper.TaskMapper;
-import com.example.kanban.repository.AppUserRepository;
 import com.example.kanban.repository.TaskRepository;
+import com.example.kanban.security.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,12 +25,12 @@ import lombok.RequiredArgsConstructor;
 public class TaskServiceImpl implements TaskService {
 
 	private final TaskRepository taskRepository;
-	private final AppUserRepository appUserRepository;
+	private final SecurityUtil securityUtil;
 
 	@Override
 	@Transactional
 	public TaskResponseDto createTask(TaskRequestDto taskRequestDto) {
-		AppUser currentUser = getCurrentUser();
+		AppUser currentUser = securityUtil.getCurrentUser();
 		Task task = TaskMapper.toEntity(taskRequestDto);
 		task.setAppUser(currentUser);
 		task.setStatus(TaskStatus.TODO);
@@ -44,7 +42,7 @@ public class TaskServiceImpl implements TaskService {
 	@Transactional(readOnly = true)
 	public Page<TaskResponseDto> getMyTasks(int page, int size, String sortBy, String direction, TaskStatus status,
 			String keyword) {
-		AppUser currentUser = getCurrentUser();
+		AppUser currentUser = securityUtil.getCurrentUser();
 		Sort sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 		Pageable pageable = PageRequest.of(page, size, sort);
 		Page<Task> taskPage;
@@ -93,14 +91,8 @@ public class TaskServiceImpl implements TaskService {
 		taskRepository.delete(task);
 	}
 
-	private AppUser getCurrentUser() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String email = authentication.getName();
-		return appUserRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-	}
-
 	private Task getTaskForCurrentUser(Long id) {
-		AppUser currentUser = getCurrentUser();
+		AppUser currentUser = securityUtil.getCurrentUser();
 		return taskRepository.findByIdAndAppUser(id, currentUser)
 				.orElseThrow(() -> new ResourceNotFoundException("Task not found."));
 	}
