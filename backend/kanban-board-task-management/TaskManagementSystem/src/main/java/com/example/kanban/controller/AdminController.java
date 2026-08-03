@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.kanban.dto.admin.AdminDashboardResponseDto;
 import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.service.AdminService;
@@ -23,20 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 
 	private final AdminService adminService;
-//	User Management
-//	GET /admin/users
-//	GET /admin/users/{id}
-//	DELETE /admin/users/{id}
-//	Task Management
-//	GET /admin/tasks
-//	GET /admin/tasks/{id}
-//	DELETE /admin/tasks/{id}
-//	Dashboard -
-//	{ totalUsers, totalTasks, completedTasks, todoTasks, inProgressTasks}
-//GET /admin/dashboard
 
 	/**
-	 * 
+	 * Retrieve all users with pagination and sorting.
 	 * @param page
 	 * @param size
 	 * @param sortBy
@@ -47,54 +37,71 @@ public class AdminController {
 	public ResponseEntity<Page<UserResponseDto>> getAllUsers(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
 			@RequestParam(defaultValue = "desc") String direction) {
-		return ResponseEntity.ok(adminService.getAllUsers(page, size, direction, direction));
+		return ResponseEntity.ok(adminService.getAllUsers(page, size, sortBy, direction));
 	}
 
+	/**
+	 * Retrieves users by id
+	 * @param userId
+	 * @return
+	 */
 	@GetMapping("/users/{userId}")
-	public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
+	public ResponseEntity<UserResponseDto> getUserById(@PathVariable Long userId) {
 		return ResponseEntity.ok(adminService.getUserById(userId));
 	}
 
 	/**
-	 * Delete a user.
-	 * 
+	 * Delete a user by id
 	 * @param userId
 	 * @return
 	 */
 	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+	public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
 		adminService.deleteUser(userId);
-		return ResponseEntity.ok("User deleted successfully.");
+		return ResponseEntity.noContent().build();
 	}
 
 	/**
-	 * 
+	 * Retrieve all tasks with pagination and sorting.
 	 * @param page
 	 * @param size
 	 * @param direction
 	 * @return
 	 */
-	@GetMapping
+	@GetMapping("/tasks")
 	public ResponseEntity<Page<TaskResponseDto>> getAllTasks(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "desc") String direction) {
-		return ResponseEntity.ok(adminService.getAllTasks(page, size, direction, direction));
-	}
-
-	@GetMapping("/tasks/{taskId}")
-	public ResponseEntity<TaskResponseDto> getTask(@PathVariable Long taskId) {
-		return ResponseEntity.ok(adminService.getTaskBydId(taskId));
+			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,
+			@RequestParam(defaultValue = "desc") String direction) {
+		return ResponseEntity.ok(adminService.getAllTasks(page, size, sortBy, direction));
 	}
 
 	/**
-	 * Delete any task.
-	 * 
+	 * Retrieve a task by id
+	 * @param taskId
+	 * @return
+	 */
+	@GetMapping("/tasks/{taskId}")
+	public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable Long taskId) {
+		return ResponseEntity.ok(adminService.getTaskById(taskId));
+	}
+
+	/**
+	 * Delete a task by id
 	 * @param taskId
 	 * @return
 	 */
 	@DeleteMapping("/tasks/{taskId}")
-	public ResponseEntity<String> deleteTask(@PathVariable Long taskId) {
+	public ResponseEntity<Void> deleteTaskById(@PathVariable Long taskId) {
 		adminService.deleteTask(taskId);
-		return ResponseEntity.ok("Task deleted successfully.");
+		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * Retrieves all the details of users and task like count
+	 * @return
+	 */
+	@GetMapping("/dashboard")
+	public ResponseEntity<AdminDashboardResponseDto> getDashboard() {
+		return ResponseEntity.ok(adminService.getDashboard());
+	}
 }

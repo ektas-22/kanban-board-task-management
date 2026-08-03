@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.kanban.dto.user.ChangePasswordRequestDto;
 import com.example.kanban.dto.user.UpdateProfileRequestDto;
 import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.service.UserService;
@@ -18,17 +19,35 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-	
-	@GetMapping
-	public ResponseEntity<UserResponseDto> getProfile(){
+
+	/**
+	 * 
+	 * @return
+	 */
+	@GetMapping("/profile-details")
+	public ResponseEntity<UserResponseDto> getProfile() {
 		return ResponseEntity.ok(userService.getProfile());
 	}
-	
-	@PutMapping("/")
-	public ResponseEntity<UserResponseDto> updateProfile(UpdateProfileRequestDto updateProfileRequestDto){
+
+	/**
+	 * 
+	 * @param updateProfileRequestDto
+	 * @return
+	 */
+	@PutMapping("/update-profile")
+	public ResponseEntity<UserResponseDto> updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
 		return ResponseEntity.ok(userService.updateProfile(updateProfileRequestDto));
 	}
-//
-//	PUT /api/users/change-password
-	
+
+	/**
+	 * 
+	 * @param passwordRequestDto
+	 * @return
+	 */
+	@PutMapping("/change-password")
+	public ResponseEntity<Void> changePassword(ChangePasswordRequestDto passwordRequestDto) {
+		userService.changePassword(passwordRequestDto);
+		return ResponseEntity.noContent().build();
+	}
+
 }

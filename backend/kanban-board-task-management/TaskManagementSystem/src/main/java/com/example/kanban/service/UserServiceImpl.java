@@ -1,5 +1,6 @@
 package com.example.kanban.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -7,6 +8,7 @@ import com.example.kanban.dto.user.ChangePasswordRequestDto;
 import com.example.kanban.dto.user.UpdateProfileRequestDto;
 import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.entity.AppUser;
+import com.example.kanban.exception.BadRequestException;
 import com.example.kanban.mapper.UserMapper;
 import com.example.kanban.repository.AppUserRepository;
 import com.example.kanban.security.SecurityUtil;
@@ -18,9 +20,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-	private final AppUserRepository appUserRepository;
-	
 	private final SecurityUtil securityUtil;
+	private final PasswordEncoder passwordEncoder;
+	private final AppUserRepository appUserRepository;
 
 	@Override
 	@Transactional
@@ -30,14 +32,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public UserResponseDto updateProfile(UpdateProfileRequestDto updateProfileRequestDto) {
-		// TODO Auto-generated method stub
-		return null;
+		AppUser currentUser = securityUtil.getCurrentUser();
+		currentUser.setName(updateProfileRequestDto.getName());
+		appUserRepository.save(currentUser);
+		return UserMapper.toResponseDto(currentUser);
 	}
 
 	@Override
+	@Transactional
 	public void changePassword(ChangePasswordRequestDto changePasswordRequestDto) {
-		// TODO Auto-generated method stub
+		AppUser currentUser = securityUtil.getCurrentUser();
+		if (!passwordEncoder.matches(changePasswordRequestDto.getCurrentPassword(), currentUser.getPassword())) {
+			throw new BadRequestException("Current password is incorrect");
+		}
+		if (passwordEncoder.matches(changePasswordRequestDto.getNewPassword(), currentUser.getPassword())) {
+			throw new BadRequestException("New password must be different from the current password.");
+		}
+		currentUser.setPassword(passwordEncoder.encode(changePasswordRequestDto.getNewPassword()));
+		appUserRepository.save(currentUser);
 
 	}
 

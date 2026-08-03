@@ -39,36 +39,43 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public UserResponseDto getUserById(Long userId) {
 		return appUserRepository.findById(userId).map(UserMapper::toResponseDto)
-				.orElseThrow(() -> new ResourceNotFoundException("User not found with the id" + userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with the id " + userId));
 	}
 
 	@Override
 	public void deleteUser(Long userId) {
-		appUserRepository.deleteById(userId);
+		AppUser user = appUserRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with the id " + userId));
+		appUserRepository.delete(user);
 	}
 
 	@Override
 	public Page<TaskResponseDto> getAllTasks(int page, int size, String sortBy, String direction) {
 		Sort sort = direction.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 		Pageable pageable = PageRequest.of(page, size, sort);
-		Page<Task> userPage = taskRepository.findAll(pageable);
-		return userPage.map(TaskMapper::toResponseDto);
+		Page<Task> taskPage = taskRepository.findAll(pageable);
+		return taskPage.map(TaskMapper::toResponseDto);
 	}
 
 	@Override
-	public TaskResponseDto getTaskBydId(Long taskId) {
+	@Transactional(readOnly = true)
+	public TaskResponseDto getTaskById(Long taskId) {
 		return taskRepository.findById(taskId).map(TaskMapper::toResponseDto)
-				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id" + taskId));
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id " + taskId));
 	}
 
 	@Override
 	public void deleteTask(Long taskId) {
-		taskRepository.deleteById(taskId);
+		Task task = taskRepository.findById(taskId)
+				.orElseThrow(() -> new ResourceNotFoundException("Task not found with the id " + taskId));
+		taskRepository.delete(task);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public AdminDashboardResponseDto getDashboard() {
 		long totalUsers = appUserRepository.count();
 		long totalTasks = taskRepository.count();

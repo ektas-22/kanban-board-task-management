@@ -22,12 +22,22 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	/**
+	 * Registration of a user
+	 * @param registerRequestDto
+	 * @return
+	 */
 	@PostMapping("/register")
 	public ResponseEntity<AuthResponseDto> register(@Valid @RequestBody RegisterRequestDto registerRequestDto) {
 		AuthResponseDto authResponseDto = authService.register(registerRequestDto);
 		return new ResponseEntity<>(authResponseDto, HttpStatus.CREATED);
 	}
 
+	/**
+	 * Login of user 
+	 * @param loginRequestDto
+	 * @return
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<AuthResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto) {
 		AuthResponseDto authResponseDto = authService.login(loginRequestDto);

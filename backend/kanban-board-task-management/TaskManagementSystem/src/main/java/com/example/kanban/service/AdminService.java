@@ -18,7 +18,7 @@ public interface AdminService {
 	// Task Management
 	Page<TaskResponseDto> getAllTasks(int page, int size, String sortBy, String direction);
 
-	TaskResponseDto getTaskBydId(Long taskId);
+	TaskResponseDto getTaskById(Long taskId);
 
 	void deleteTask(Long taskId);
 	
