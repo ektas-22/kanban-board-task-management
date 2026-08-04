@@ -20,9 +20,12 @@ import com.example.kanban.dto.task.TaskStatusUpdateDto;
 import com.example.kanban.enums.TaskStatus;
 import com.example.kanban.service.TaskService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Task Management", description = "APIs for managing personal tasks")
 @RestController
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
@@ -54,6 +57,7 @@ public class TaskController {
 	 * @param keyword
 	 * @return
 	 */
+	@Operation(summary = "Retrieve all tasks", description = "Returns paginated, sorted, filtered, and searchable tasks belonging to the authenticated user.")
 	@GetMapping
 	public ResponseEntity<Page<TaskResponseDto>> getMyTasks(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "5") int size, @RequestParam(defaultValue = "createdAt") String sortBy,

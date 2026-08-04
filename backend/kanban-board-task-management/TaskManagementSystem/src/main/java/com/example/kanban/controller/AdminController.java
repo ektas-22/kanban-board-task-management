@@ -15,8 +15,10 @@ import com.example.kanban.dto.task.TaskResponseDto;
 import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.service.AdminService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Administration", description = "Administrative APIs for managing users and tasks")
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class AdminController {
 
 	/**
 	 * Retrieve all users with pagination and sorting.
+	 * 
 	 * @param page
 	 * @param size
 	 * @param sortBy
@@ -42,6 +45,7 @@ public class AdminController {
 
 	/**
 	 * Retrieves users by id
+	 * 
 	 * @param userId
 	 * @return
 	 */
@@ -52,6 +56,7 @@ public class AdminController {
 
 	/**
 	 * Delete a user by id
+	 * 
 	 * @param userId
 	 * @return
 	 */
@@ -63,6 +68,7 @@ public class AdminController {
 
 	/**
 	 * Retrieve all tasks with pagination and sorting.
+	 * 
 	 * @param page
 	 * @param size
 	 * @param direction
@@ -77,6 +83,7 @@ public class AdminController {
 
 	/**
 	 * Retrieve a task by id
+	 * 
 	 * @param taskId
 	 * @return
 	 */
@@ -87,6 +94,7 @@ public class AdminController {
 
 	/**
 	 * Delete a task by id
+	 * 
 	 * @param taskId
 	 * @return
 	 */
@@ -98,6 +106,7 @@ public class AdminController {
 
 	/**
 	 * Retrieves all the details of users and task like count
+	 * 
 	 * @return
 	 */
 	@GetMapping("/dashboard")

@@ -42,7 +42,7 @@ public class SecurityConfig {
 						// Swagger (optional)
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
 						// Admin APIs
-						.requestMatchers("/admin/**").hasRole("ADMIN")
+						.requestMatchers("/api/admin/**").hasRole("ADMIN")
 						// Everything else
 						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())

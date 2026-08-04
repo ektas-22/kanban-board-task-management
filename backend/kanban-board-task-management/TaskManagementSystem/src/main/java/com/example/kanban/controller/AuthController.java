@@ -12,9 +12,11 @@ import com.example.kanban.dto.auth.LoginRequestDto;
 import com.example.kanban.dto.auth.RegisterRequestDto;
 import com.example.kanban.service.AuthService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Authentication", description = "User registration and login APIs")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ public class AuthController {
 
 	/**
 	 * Registration of a user
+	 * 
 	 * @param registerRequestDto
 	 * @return
 	 */
@@ -34,7 +37,8 @@ public class AuthController {
 	}
 
 	/**
-	 * Login of user 
+	 * Login of user
+	 * 
 	 * @param loginRequestDto
 	 * @return
 	 */

@@ -11,8 +11,10 @@ import com.example.kanban.dto.user.UpdateProfileRequestDto;
 import com.example.kanban.dto.user.UserResponseDto;
 import com.example.kanban.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "User Profile", description = "Manage authenticated user's profile")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

@@ -1,5 +1,5 @@
 package com.boardtask.main.service;
 
-public class AdminServiceTest {
+public class AuthServiceImplTest {
 
 }
