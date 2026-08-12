@@ -8,18 +8,25 @@ function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
-    try {
-      const authData = await loginService(data);
+    console.log("0. onSubmit called", data);
 
-      login(authData);
+    try {
+      const response = await loginService(data);
+
+      console.log("Login response:", response);
+
+      login(response);
 
       toast.success("Login successful");
-      if (authData.role === "ADMIN") {
+
+      if (response.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else {
         navigate("/dashboard");
       }
     } catch (error) {
+      console.error("LOGIN ERROR:", error);
+
       toast.error(error.response?.data?.message || "Login failed");
     }
   };

@@ -1,38 +1,35 @@
 import { Route } from "react-router-dom";
 import { BrowserRouter, Routes } from "react-router-dom";
 import Login from "../pages/auth/Login";
-import Register from "../pages/auth/Register";
 import Dashboard from "../pages/task/Dashboard";
-// import Profile from "../pages/profile/Profile";
-import AdminDashboard from "../pages/admin/AdminDashboard";
-import Users from "../pages/admin/Users";
-import Tasks from "../pages/admin/Tasks";
-import NotFound from "../pages/error/NotFound";
-import PrivateRoutes from "./PrivateRoutes";
-import AdminRoutes from "./AdminRoutes";
-import Unauthorized from "../pages/error/Unauthorized";
+import CreateTask from "../pages/task/CreateTask";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import { Navigate } from "react-router-dom";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Public Routes */}
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        {/* Private Routes */}
-        <Route element={<PrivateRoutes />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        {/* User Protected Routes */}
+        <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
-          {/* <Route path="/profile" element={<Profile />} /> */}
-          {/* Admin Routes */}
-          <Route element={<AdminRoutes />}>
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<Users />} />
-            <Route path="/admin/tasks" element={<Tasks />} />
-          </Route>
+          <Route path="/tasks/create" element={<CreateTask />} />
         </Route>
-        {/* Error Routes */}
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="*" element={<NotFound />} />
+
+        {/* Admin Protected Routes */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminRoute>
+            </AdminRoute>
+          }
+        />
+        {/* Fallback Routes */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );

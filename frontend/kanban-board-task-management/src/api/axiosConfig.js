@@ -11,7 +11,7 @@ axiosInstance.interceptors.request.use(
     (config) => {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        if (user?.token) {
+        if (user?.token && !config.url.includes("/auth/login")) {
             config.headers.Authorization = `Bearer ${user.token}`;
         }
 
