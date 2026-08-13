@@ -1,12 +1,22 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getTasks } from "../../services/TaskService";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/useAuth";
+import {
+  getTasks,
+  deleteTask,
+  updateTaskStatus,
+} from "../../services/TaskService";
+
+import KanbanBoard from "../../components/kanban/KanbanBoard";
 
 function Dashboard() {
   const navigate = useNavigate();
+
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { logout } = useAuth();
+
   useEffect(() => {
     let ignore = false;
 
@@ -44,28 +54,76 @@ function Dashboard() {
     };
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  const handleDelete = async (taskId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this task?",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteTask(taskId);
+
+      setTasks((currentTasks) =>
+        currentTasks.filter((task) => task.id !== taskId),
+      );
+
+      toast.success("Task deleted successfully");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+
+      toast.error(error.response?.data?.message || "Failed to delete task");
+    }
+  };
+
+  const handleStatusChange = async (taskId, newStatus) => {
+    try {
+      const updatedTask = await updateTaskStatus(taskId, newStatus);
+
+      setTasks((currentTasks) =>
+        currentTasks.map((task) => (task.id === taskId ? updatedTask : task)),
+      );
+
+      toast.success("Task status updated successfully");
+    } catch (error) {
+      console.error("Error updating task status:", error);
+
+      toast.error(
+        error.response?.data?.message || "Failed to update task status",
+      );
+    }
+  };
+
+  const handleEdit = (taskId) => {
+    navigate(`/tasks/edit/${taskId}`);
+  };
+
   return (
     <div>
       <h1>Task Dashboard</h1>
+      <button onClick={handleLogout}>Logout</button>
       <p>Welcome to your Kanban Task Management Dashboard.</p>
+
       <button onClick={() => navigate("/tasks/create")}>Create Task</button>
+
       <hr />
-      <h2>My Tasks</h2>
-      {loading && <p>Loading tasks...</p>}
-      {!loading && tasks.length === 0 && <p>No tasks found.</p>}
-      {!loading && tasks.length > 0 && (
-        <div>
-          {tasks.map((task) => (
-            <div key={task.id}>
-              <h3>{task.title}</h3>
-              <p>{task.description || "No description"}</p>
-              <p>
-                Status: <strong>{task.status}</strong>
-              </p>
-              <hr />
-            </div>
-          ))}
-        </div>
+
+      {loading ? (
+        <p>Loading tasks...</p>
+      ) : (
+        <KanbanBoard
+          tasks={tasks}
+          onDropTask={handleStatusChange}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   );

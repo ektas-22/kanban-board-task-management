@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/useAuth";
 import { login as loginService } from "../../services/authService";
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -48,6 +48,12 @@ function Login() {
         <br />
         <button type="submit">Login</button>
       </form>
+      <p>
+        Don't have an account?{" "}
+        <button type="button" onClick={() => navigate("/register")}>
+          Register
+        </button>
+      </p>
     </div>
   );
 }

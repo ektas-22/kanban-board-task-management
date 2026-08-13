@@ -41,6 +41,14 @@ export const deleteTask = async (taskId) => {
   const response = await axiosInstance.delete(`/api/tasks/${taskId}`);
   return response.data;
 };
+export const updateTaskStatus = async (taskId, status) => {
+    const response = await axiosInstance.patch(
+        `/api/tasks/${taskId}/status`,
+        { status }
+    );
+
+    return response.data;
+};
 export const assignTask = async (taskId, userId) => {
   const response = await axiosInstance.post(`/api/tasks/${taskId}/assign`, {
     userId,
