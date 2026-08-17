@@ -8,6 +8,11 @@ import CreateTask from "../pages/task/CreateTask";
 import EditTask from "../pages/task/EditTask";
 
 import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminUsers from "../pages/admin/AdminUsers";
+import UserDetails from "../pages/admin/UserDetails";
+import AdminTasks from "../pages/admin/AdminTasks";
+import TaskDetails from "../pages/admin/TaskDetails";
+import AdminLayout from "../components/layout/AdminLayout";
 
 import ProtectedRoute from "./ProtectedRoutes";
 
@@ -28,7 +33,13 @@ function AppRoutes() {
 
         {/* ADMIN Routes */}
         <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/users/:userId" element={<UserDetails />} />
+            <Route path="/admin/tasks" element={<AdminTasks />} />
+            <Route path="/admin/tasks/:taskId" element={<TaskDetails />} />
+          </Route>
         </Route>
 
         {/* Unknown URL */}

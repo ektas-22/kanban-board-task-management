@@ -9,6 +9,7 @@ import {
 } from "../../services/TaskService";
 
 import KanbanBoard from "../../components/kanban/KanbanBoard";
+import "../../assets/styles/userdashboard.css";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const { logout } = useAuth();
-
+  const [deleteTaskId, setDeleteTaskId] = useState(null);
   useEffect(() => {
     let ignore = false;
 
@@ -59,28 +60,8 @@ function Dashboard() {
     navigate("/");
   };
 
-  const handleDelete = async (taskId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this task?",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
-    try {
-      await deleteTask(taskId);
-
-      setTasks((currentTasks) =>
-        currentTasks.filter((task) => task.id !== taskId),
-      );
-
-      toast.success("Task deleted successfully");
-    } catch (error) {
-      console.error("Error deleting task:", error);
-
-      toast.error(error.response?.data?.message || "Failed to delete task");
-    }
+  const handleDelete = (taskId) => {
+    setDeleteTaskId(taskId);
   };
 
   const handleStatusChange = async (taskId, newStatus) => {
@@ -104,27 +85,159 @@ function Dashboard() {
   const handleEdit = (taskId) => {
     navigate(`/tasks/edit/${taskId}`);
   };
+  const confirmDelete = async () => {
+    try {
+      await deleteTask(deleteTaskId);
+
+      setTasks((currentTasks) =>
+        currentTasks.filter((task) => task.id !== deleteTaskId),
+      );
+
+      toast.success("Task deleted successfully");
+    } catch (error) {
+      console.error("Error deleting task:", error);
+
+      toast.error(error.response?.data?.message || "Failed to delete task");
+    } finally {
+      setDeleteTaskId(null);
+    }
+  };
 
   return (
-    <div>
-      <h1>Task Dashboard</h1>
-      <button onClick={handleLogout}>Logout</button>
-      <p>Welcome to your Kanban Task Management Dashboard.</p>
+    <div className="dashboard-page">
+      {/* Header */}
+      <header className="dashboard-header">
+        <div className="dashboard-logo">
+          <div className="dashboard-logo-icon">✓</div>
 
-      <button onClick={() => navigate("/tasks/create")}>Create Task</button>
+          <span>Taskly</span>
+        </div>
 
-      <hr />
+        <div className="dashboard-header-actions">
+          <span className="dashboard-header-link">Dashboard</span>
 
-      {loading ? (
-        <p>Loading tasks...</p>
-      ) : (
-        <KanbanBoard
-          tasks={tasks}
-          onDropTask={handleStatusChange}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      )}
+          <button className="dashboard-logout-button" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </header>
+
+      {/* Main content */}
+      <main className="dashboard-content">
+        {/* Welcome section */}
+        <section className="dashboard-welcome">
+          <div>
+            <p className="dashboard-eyebrow">YOUR WORKSPACE</p>
+
+            <h1>Welcome back 👋</h1>
+
+            <p className="dashboard-subtitle">
+              Organize your work and keep your tasks moving forward.
+            </p>
+          </div>
+
+          <button
+            className="dashboard-create-button"
+            onClick={() => navigate("/tasks/create")}
+          >
+            <span>+</span>
+            Create Task
+          </button>
+        </section>
+
+        {/* Task summary */}
+        <section className="dashboard-summary">
+          <div className="dashboard-summary-card">
+            <span className="dashboard-summary-label">Total Tasks</span>
+
+            <strong>{tasks.length}</strong>
+          </div>
+
+          <div className="dashboard-summary-card">
+            <span className="dashboard-summary-label">To Do</span>
+
+            <strong>
+              {tasks.filter((task) => task.status === "TODO").length}
+            </strong>
+          </div>
+
+          <div className="dashboard-summary-card">
+            <span className="dashboard-summary-label">In Progress</span>
+
+            <strong>
+              {tasks.filter((task) => task.status === "IN_PROGRESS").length}
+            </strong>
+          </div>
+
+          <div className="dashboard-summary-card">
+            <span className="dashboard-summary-label">Completed</span>
+
+            <strong>
+              {tasks.filter((task) => task.status === "DONE").length}
+            </strong>
+          </div>
+        </section>
+
+        {/* Kanban section */}
+        {/* Kanban section */}
+        <section className="dashboard-board-section">
+          <div className="dashboard-board-header">
+            <div>
+              <h2>My Tasks</h2>
+
+              <p>Drag and drop tasks to update their status.</p>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="dashboard-loading">
+              <div className="dashboard-spinner"></div>
+
+              <p>Loading your tasks...</p>
+            </div>
+          ) : (
+            <KanbanBoard
+              tasks={tasks}
+              onDropTask={handleStatusChange}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          )}
+
+          {deleteTaskId && (
+            <div className="delete-modal-overlay">
+              <div className="delete-modal">
+                <div className="delete-modal-icon">!</div>
+
+                <h2>Delete task?</h2>
+
+                <p>
+                  This task will be permanently deleted. This action cannot be
+                  undone.
+                </p>
+
+                <div className="delete-modal-actions">
+                  <button
+                    type="button"
+                    className="delete-cancel-button"
+                    onClick={() => setDeleteTaskId(null)}
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    className="delete-confirm-button"
+                    onClick={confirmDelete}
+                  >
+                    Delete Task
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 }

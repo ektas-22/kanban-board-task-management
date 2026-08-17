@@ -1,0 +1,890 @@
+/* ================================
+   Page
+   ================================ */
+
+.login-page {
+  min-height: 100vh;
+  padding: 28px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(129, 140, 248, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(96, 165, 250, 0.16),
+      transparent 30%
+    ),
+    #f5f7ff;
+}
+
+
+/* ================================
+   Main Container
+   ================================ */
+
+.login-container {
+  position: relative;
+
+  width: 100%;
+  max-width: 1120px;
+  min-height: 680px;
+
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+
+  overflow: hidden;
+
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 26px;
+
+  box-shadow:
+    0 30px 70px rgba(30, 41, 59, 0.12),
+    0 8px 25px rgba(30, 41, 59, 0.05);
+}
+
+
+/* ================================
+   Left / Brand Section
+   ================================ */
+
+.login-brand-section {
+  position: relative;
+
+  padding: 42px 46px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(129, 140, 248, 0.25),
+      transparent 28%
+    ),
+    linear-gradient(
+      145deg,
+      #312e81 0%,
+      #4338ca 48%,
+      #4f46e5 100%
+    );
+
+  color: #ffffff;
+}
+
+
+/* Decorative circles */
+
+.login-brand-section::before {
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  right: -130px;
+  top: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.login-brand-section::after {
+  content: "";
+
+  position: absolute;
+
+  width: 190px;
+  height: 190px;
+
+  left: -100px;
+  bottom: -80px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* ================================
+   Brand Logo
+   ================================ */
+
+.brand-logo {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 11px;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(10px);
+}
+
+.brand-logo > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.brand-tagline {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+
+/* ================================
+   Brand Content
+   ================================ */
+
+.brand-content {
+  position: relative;
+  z-index: 2;
+
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-bottom: 14px;
+
+  color: rgba(255, 255, 255, 0.65);
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+.eyebrow-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #a5b4fc;
+  box-shadow: 0 0 10px rgba(165, 180, 252, 0.8);
+}
+
+.brand-content h2 {
+  margin: 0;
+
+  font-size: 43px;
+  line-height: 1.08;
+  letter-spacing: -1.5px;
+  font-weight: 750;
+}
+
+.brand-content h2 span {
+  color: #c7d2fe;
+}
+
+.brand-content > p {
+  max-width: 455px;
+
+  margin: 18px 0 0;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* ================================
+   Kanban Wrapper
+   ================================ */
+
+.kanban-wrapper {
+  position: relative;
+
+  margin-top: 38px;
+
+  padding: 0 12px 10px;
+}
+
+
+/* ================================
+   Kanban Board
+   ================================ */
+
+.kanban-board {
+  position: relative;
+  z-index: 2;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+
+  padding: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 15px;
+
+  background: rgba(255, 255, 255, 0.09);
+
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(12px);
+}
+
+
+/* ================================
+   Kanban Column
+   ================================ */
+
+.kanban-column {
+  min-height: 150px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+}
+
+.column-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: rgba(255, 255, 255, 0.88);
+
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.task-count {
+  min-width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 5px;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: rgba(255, 255, 255, 0.6);
+
+  font-size: 9px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+
+  display: inline-block;
+
+  border-radius: 50%;
+}
+
+.todo-dot {
+  background: #fbbf24;
+}
+
+.progress-dot {
+  background: #60a5fa;
+}
+
+.done-dot {
+  background: #34d399;
+}
+
+
+/* ================================
+   Task Cards
+   ================================ */
+
+.task-card {
+  margin-bottom: 7px;
+  padding: 9px;
+
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  border-radius: 7px;
+
+  background: #ffffff;
+
+  color: #334155;
+
+  box-shadow: 0 5px 12px rgba(15, 23, 42, 0.08);
+}
+
+.task-card-title {
+  margin-bottom: 9px;
+
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.task-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #94a3b8;
+
+  font-size: 7px;
+}
+
+.priority {
+  padding: 2px 5px;
+  border-radius: 4px;
+
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.priority-high {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+
+/* ================================
+   Progress
+   ================================ */
+
+.progress-line {
+  height: 4px;
+
+  margin: 3px 0 8px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background: #e2e8f0;
+}
+
+.progress-line span {
+  display: block;
+
+  width: 60%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #6366f1;
+}
+
+.completed-card {
+  background: #f8fafc;
+}
+
+.completed-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  margin-bottom: 14px;
+
+  color: #475569;
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+
+/* ================================
+   Floating Cards
+   ================================ */
+
+.floating-card {
+  position: absolute;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 7px 10px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #475569;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+}
+
+.floating-card-one {
+  top: -13px;
+  right: 30px;
+
+  color: #4f46e5;
+}
+
+.floating-card-two {
+  bottom: -2px;
+  left: -2px;
+}
+
+.mini-avatar {
+  width: 18px;
+  height: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e0e7ff;
+  color: #4f46e5;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+
+/* ================================
+   Brand Footer
+   ================================ */
+
+.brand-footer {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  gap: 18px;
+
+  color: rgba(255, 255, 255, 0.42);
+
+  font-size: 10px;
+}
+
+
+/* ================================
+   Login Section
+   ================================ */
+
+.login-form-section {
+  padding: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(99, 102, 241, 0.07),
+      transparent 25%
+    ),
+    #ffffff;
+
+  box-sizing: border-box;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 370px;
+}
+
+
+/* ================================
+   Header
+   ================================ */
+
+.login-header {
+  margin-bottom: 31px;
+}
+
+.login-header h1 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 31px;
+  line-height: 1.2;
+  font-weight: 750;
+
+  letter-spacing: -0.8px;
+}
+
+.login-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+
+/* ================================
+   Form
+   ================================ */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.form-group label {
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.input-wrapper {
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 0 13px;
+
+  border: 1px solid #dbe1ea;
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input-wrapper svg {
+  flex-shrink: 0;
+
+  color: #94a3b8;
+}
+
+.input-wrapper:focus-within {
+  border-color: #6366f1;
+
+  background: #fcfcff;
+
+  box-shadow:
+    0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-wrapper.input-error {
+  border-color: #ef4444;
+}
+
+.input-wrapper input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #111827;
+
+  font-size: 13px;
+}
+
+.input-wrapper input::placeholder {
+  color: #a1a9b6;
+}
+
+
+/* ================================
+   Password Toggle
+   ================================ */
+
+.password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 3px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #94a3b8;
+
+  cursor: pointer;
+
+  transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+  color: #4f46e5;
+}
+
+
+/* ================================
+   Errors
+   ================================ */
+
+.form-error {
+  color: #dc2626;
+
+  font-size: 11px;
+}
+
+
+/* ================================
+   Login Button
+   ================================ */
+
+.login-button {
+  width: 100%;
+  height: 48px;
+
+  margin-top: 5px;
+  padding: 0 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #6366f1
+  );
+
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 16px rgba(79, 70, 229, 0.22);
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.login-button:hover {
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 10px 22px rgba(79, 70, 229, 0.28);
+
+  transform: translateY(-1px);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+.login-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* ================================
+   Register
+   ================================ */
+
+.register-section {
+  margin-top: 25px;
+  padding-top: 21px;
+
+  border-top: 1px solid #edf0f4;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-wrap: wrap;
+
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.register-link {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #4f46e5;
+
+  font-size: 12px;
+  font-weight: 650;
+
+  cursor: pointer;
+}
+
+.register-link:hover {
+  color: #3730a3;
+
+  text-decoration: underline;
+}
+
+
+/* ================================
+   Tablet
+   ================================ */
+
+@media (max-width: 900px) {
+  .login-page {
+    padding: 20px;
+  }
+
+  .login-container {
+    grid-template-columns: 1fr;
+
+    max-width: 520px;
+  }
+
+  .login-brand-section {
+    min-height: 500px;
+
+    padding: 35px;
+  }
+
+  .brand-content {
+    margin-top: 55px;
+    margin-bottom: 45px;
+  }
+
+  .brand-content h2 {
+    font-size: 37px;
+  }
+
+  .login-form-section {
+    padding: 40px 35px;
+  }
+}
+
+
+/* ================================
+   Mobile
+   ================================ */
+
+@media (max-width: 560px) {
+  .login-page {
+    padding: 0;
+  }
+
+  .login-container {
+    min-height: 100vh;
+
+    border: none;
+    border-radius: 0;
+
+    box-shadow: none;
+  }
+
+  .login-brand-section {
+    min-height: auto;
+
+    padding: 27px 23px;
+  }
+
+  .brand-content {
+    margin: 40px 0 20px;
+  }
+
+  .brand-content h2 {
+    font-size: 31px;
+  }
+
+  .brand-content > p {
+    font-size: 13px;
+  }
+
+  .kanban-wrapper {
+    display: none;
+  }
+
+  .brand-footer {
+    display: none;
+  }
+
+  .login-form-section {
+    padding: 35px 23px;
+    align-items: flex-start;
+  }
+
+  .login-header h1 {
+    font-size: 28px;
+  }
+}

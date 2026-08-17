@@ -1,12 +1,16 @@
 import { useDrag } from "react-dnd";
 
+import "../../assets/styles/taskcard.css";
+
 function TaskCard({ task, onEdit, onDelete }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "TASK",
+
     item: {
       id: task.id,
       status: task.status,
     },
+
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -15,27 +19,51 @@ function TaskCard({ task, onEdit, onDelete }) {
   return (
     <div
       ref={drag}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        border: "1px solid #ccc",
-        borderRadius: "8px",
-        padding: "12px",
-        marginBottom: "10px",
-        backgroundColor: "white",
-        cursor: "grab",
-      }}
+      className={`task-card ${
+        isDragging ? "task-card-dragging" : ""
+      }`}
     >
-      <h3>{task.title}</h3>
+      <div className="task-card-content">
 
-      <p>{task.description || "No description"}</p>
+        <h3>{task.title}</h3>
 
-      <p>
-        Status: <strong>{task.status}</strong>
-      </p>
+        <p>
+          {task.description || "No description"}
+        </p>
 
-      <button onClick={() => onEdit(task.id)}>Edit</button>
+      </div>
 
-      <button onClick={() => onDelete(task.id)}>Delete</button>
+      <div className="task-card-footer">
+
+        <span className="task-card-status">
+          {task.status === "IN_PROGRESS"
+            ? "In Progress"
+            : task.status === "TODO"
+              ? "To Do"
+              : "Done"}
+        </span>
+
+        <div className="task-card-actions">
+
+          <button
+            type="button"
+            className="task-edit-button"
+            onClick={() => onEdit(task.id)}
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            className="task-delete-button"
+            onClick={() => onDelete(task.id)}
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 
 import KanbanColumn from "./KanbanColumn";
 
+import "../../assets/styles/kanbanboard.css";
+
 function KanbanBoard({ tasks, onDropTask, onEdit, onDelete }) {
   const todoTasks = tasks.filter((task) => task.status === "TODO");
 
@@ -12,13 +14,7 @@ function KanbanBoard({ tasks, onDropTask, onEdit, onDelete }) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div
-        style={{
-          display: "flex",
-          gap: "10px",
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="kanban-board">
         <KanbanColumn
           title="To Do"
           status="TODO"
