@@ -1,0 +1,467 @@
+/* =========================================================
+   TASKLY KANBAN BOARD
+   ========================================================= */
+
+.kanban-board {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  gap: 16px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   COLUMN
+   ========================================================= */
+
+.kanban-column {
+  min-width: 0;
+  min-height: 430px;
+
+  padding: 12px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  background: #f8fafc;
+
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.kanban-column-over {
+  border-color: #818cf8;
+
+  background: #eef2ff;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(99, 102, 241, 0.12);
+}
+
+
+/* =========================================================
+   COLUMN HEADER
+   ========================================================= */
+
+.kanban-column-header {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+
+  padding: 0 3px;
+}
+
+.kanban-column-header h2 {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin: 0;
+
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.kanban-column-header h2::before {
+  content: "";
+
+  width: 7px;
+  height: 7px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #94a3b8;
+}
+
+
+/* =========================================================
+   STATUS COLORS
+   ========================================================= */
+
+.kanban-todo h2::before {
+  background: #64748b;
+}
+
+.kanban-in_progress h2::before {
+  background: #6366f1;
+}
+
+.kanban-done h2::before {
+  background: #22c55e;
+}
+
+
+/* =========================================================
+   COUNT
+   ========================================================= */
+
+.kanban-column-count {
+  min-width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+
+  color: #64748b;
+
+  background: #ffffff;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   TASK AREA
+   ========================================================= */
+
+.kanban-column-tasks {
+  min-height: 350px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 9px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.kanban-empty-state {
+  min-height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed #cbd5e1;
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.kanban-empty-state p {
+  margin: 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   TASK CARD
+   ========================================================= */
+
+.task-card {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 13px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.035);
+
+  cursor: grab;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.task-card:hover {
+  border-color: #cbd5e1;
+
+  box-shadow:
+    0 6px 14px rgba(15, 23, 42, 0.07);
+
+  transform: translateY(-1px);
+}
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+.task-card-dragging {
+  opacity: 0.45;
+
+  transform: rotate(1deg);
+}
+
+
+/* =========================================================
+   TASK CONTENT
+   ========================================================= */
+
+.task-card-content h3 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 13px;
+  line-height: 1.4;
+
+  font-weight: 650;
+
+  word-break: break-word;
+}
+
+.task-card-content p {
+  display: -webkit-box;
+
+  margin: 6px 0 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+  line-height: 1.5;
+
+  overflow: hidden;
+
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.task-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  margin-top: 13px;
+
+  padding-top: 10px;
+
+  border-top: 1px solid #f1f5f9;
+}
+
+
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
+.task-card-status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 4px 7px;
+
+  border-radius: 5px;
+
+  color: #64748b;
+
+  background: #f1f5f9;
+
+  font-size: 9px;
+  line-height: 1;
+
+  font-weight: 650;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.task-card-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 3px;
+}
+
+.task-edit-button,
+.task-delete-button {
+  padding: 4px 6px;
+
+  border: 0;
+  border-radius: 5px;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: 9px;
+  font-weight: 650;
+
+  cursor: pointer;
+
+  transition:
+    color 180ms ease,
+    background 180ms ease;
+}
+
+.task-edit-button {
+  color: #4f46e5;
+}
+
+.task-edit-button:hover {
+  color: #4338ca;
+
+  background: #eef2ff;
+}
+
+.task-delete-button {
+  color: #94a3b8;
+}
+
+.task-delete-button:hover {
+  color: #dc2626;
+
+  background: #fef2f2;
+}
+
+.task-edit-button:focus-visible,
+.task-delete-button:focus-visible {
+  outline: 2px solid rgba(79, 70, 229, 0.25);
+  outline-offset: 1px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .kanban-board {
+    gap: 10px;
+  }
+
+  .kanban-column {
+    padding: 9px;
+  }
+
+  .task-card {
+    padding: 10px;
+  }
+
+  .task-card-content h3 {
+    font-size: 12px;
+  }
+
+  .task-card-content p {
+    font-size: 10px;
+  }
+
+  .task-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 8px;
+  }
+
+  .task-card-actions {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  .kanban-board {
+    display: flex;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    gap: 10px;
+
+    padding-bottom: 8px;
+
+    scroll-snap-type: x proximity;
+  }
+
+  .kanban-column {
+    width: min(82vw, 320px);
+
+    min-width: min(82vw, 320px);
+
+    min-height: 400px;
+
+    flex-shrink: 0;
+
+    scroll-snap-align: start;
+  }
+
+  .kanban-column-tasks {
+    min-height: 320px;
+  }
+
+  .task-card-footer {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .task-card-actions {
+    width: auto;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .kanban-column {
+    width: 86vw;
+    min-width: 86vw;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .kanban-column,
+  .task-card,
+  .task-edit-button,
+  .task-delete-button {
+    transition: none;
+  }
+}

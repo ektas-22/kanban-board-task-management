@@ -1,8 +1,9 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 
 function ProtectedRoute({ allowedRoles }) {
   const { user } = useAuth();
+  const location = useLocation();
 
   // Not logged in
   if (!user) {
@@ -11,11 +12,13 @@ function ProtectedRoute({ allowedRoles }) {
 
   // Logged in but wrong role
   if (allowedRoles && !allowedRoles.includes(user.role)) {
-    if (user.role === "ADMIN") {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
-
-    return <Navigate to="/dashboard" replace />;
+    return (
+      <Navigate
+        to="/unauthorized"
+        replace
+        state={{ from: location.pathname }}
+      />
+    );
   }
 
   return <Outlet />;

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import {
   CheckSquare,
   User,
@@ -16,7 +15,7 @@ import {
 import { register as registerService } from "../../services/authService";
 import { useAuth } from "../../context/useAuth";
 
-import "../../assets/styles/register.css";
+import "../../assets/styles/auth/register.css";
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +43,6 @@ function Register() {
 
       console.log("Register response:", response);
 
-      // Registration API returns JWT, so log the user in
       login(response);
 
       toast.success("Registration successful");
@@ -53,30 +51,39 @@ function Register() {
     } catch (error) {
       console.error("Registration error:", error);
 
-      toast.error(error.response?.data?.message || "Registration failed");
+      toast.error(
+        error.response?.data?.message || "Registration failed"
+      );
     }
   };
 
   return (
     <div className="register-page">
-      <div className="register-container">
-        {/* Left branding section */}
-        <section className="register-brand-section">
-          <div className="register-brand-logo">
-            <div className="register-brand-icon">
+      <div className="register-page-container">
+
+        {/* Branding */}
+        <section className="register-page-brand">
+
+          <div className="register-page-brand-logo">
+            <div className="register-page-brand-icon">
               <CheckSquare size={22} />
             </div>
 
-            <div className="register-brand-text">
-              <span className="register-brand-name">Taskly</span>
+            <div className="register-page-brand-text">
+              <span className="register-page-brand-name">
+                Taskly
+              </span>
 
-              <span className="register-brand-tagline">Work smarter</span>
+              <span className="register-page-brand-tagline">
+                Work smarter
+              </span>
             </div>
           </div>
 
-          <div className="register-brand-content">
-            <div className="register-eyebrow">
-              <span className="register-eyebrow-dot"></span>
+          <div className="register-page-brand-content">
+
+            <div className="register-page-eyebrow">
+              <span className="register-page-eyebrow-dot"></span>
               GET STARTED
             </div>
 
@@ -87,70 +94,92 @@ function Register() {
             </h2>
 
             <p>
-              Create your account and start organizing your tasks with a simple
-              and focused Kanban workflow.
+              Create your account and start organizing your tasks
+              with a simple and focused Kanban workflow.
             </p>
 
-            <div className="register-benefits">
-              <div className="register-benefit">
-                <div className="benefit-icon">
+            <div className="register-page-benefits">
+
+              <div className="register-page-benefit">
+                <div className="register-page-benefit-icon">
                   <CheckSquare size={15} />
                 </div>
 
-                <div>
+                <div className="register-page-benefit-content">
                   <strong>Stay organized</strong>
-                  <span>Keep all your tasks in one place.</span>
+                  <span>
+                    Keep all your tasks in one place.
+                  </span>
                 </div>
               </div>
 
-              <div className="register-benefit">
-                <div className="benefit-icon">
+              <div className="register-page-benefit">
+                <div className="register-page-benefit-icon">
                   <ArrowRight size={15} />
                 </div>
 
-                <div>
+                <div className="register-page-benefit-content">
                   <strong>Track your progress</strong>
-                  <span>Move tasks from To Do to Done.</span>
+                  <span>
+                    Move tasks from To Do to Done.
+                  </span>
                 </div>
               </div>
 
-              <div className="register-benefit">
-                <div className="benefit-icon">
+              <div className="register-page-benefit">
+                <div className="register-page-benefit-icon">
                   <User size={15} />
                 </div>
 
-                <div>
+                <div className="register-page-benefit-content">
                   <strong>Your personal workspace</strong>
-                  <span>Manage your work your way.</span>
+                  <span>
+                    Manage your work your way.
+                  </span>
                 </div>
               </div>
+
             </div>
           </div>
 
-          <div className="register-brand-footer">
+          <div className="register-page-brand-footer">
             <span>Simple.</span>
             <span>Focused.</span>
             <span>Productive.</span>
           </div>
+
         </section>
 
-        {/* Registration form */}
-        <section className="register-form-section">
-          <div className="register-card">
-            <div className="register-header">
+        {/* Registration Form */}
+        <section className="register-page-form-section">
+
+          <div className="register-page-card">
+
+            <div className="register-page-header">
               <h1>Create your account</h1>
 
-              <p>Join TaskFlow and start organizing your work.</p>
+              <p>
+                Join Taskly and start organizing your work.
+              </p>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="register-form">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="register-page-form"
+            >
+
               {/* Name */}
-              <div className="register-form-group">
-                <label htmlFor="name">Name</label>
+              <div className="register-page-form-group">
+
+                <label htmlFor="name">
+                  Name
+                </label>
 
                 <div
-                  className={`register-input-wrapper ${
-                    errors.name ? "register-input-error" : ""
+                  className={`register-page-input-wrapper ${
+                    errors.name
+                      ? "register-page-input-error"
+                      : ""
                   }`}
                 >
                   <User size={18} />
@@ -163,30 +192,38 @@ function Register() {
                       required: "Name is required",
                       minLength: {
                         value: 2,
-                        message: "Name must be at least 2 characters",
+                        message:
+                          "Name must be at least 2 characters",
                       },
                       maxLength: {
                         value: 50,
-                        message: "Name must be at most 50 characters",
+                        message:
+                          "Name must be at most 50 characters",
                       },
                     })}
                   />
                 </div>
 
                 {errors.name && (
-                  <span className="register-form-error">
+                  <span className="register-page-form-error">
                     {errors.name.message}
                   </span>
                 )}
+
               </div>
 
               {/* Email */}
-              <div className="register-form-group">
-                <label htmlFor="email">Email</label>
+              <div className="register-page-form-group">
+
+                <label htmlFor="email">
+                  Email
+                </label>
 
                 <div
-                  className={`register-input-wrapper ${
-                    errors.email ? "register-input-error" : ""
+                  className={`register-page-input-wrapper ${
+                    errors.email
+                      ? "register-page-input-error"
+                      : ""
                   }`}
                 >
                   <Mail size={18} />
@@ -199,86 +236,130 @@ function Register() {
                       required: "Email is required",
                       pattern: {
                         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Please enter a valid email address",
+                        message:
+                          "Please enter a valid email address",
                       },
                     })}
                   />
                 </div>
 
                 {errors.email && (
-                  <span className="register-form-error">
+                  <span className="register-page-form-error">
                     {errors.email.message}
                   </span>
                 )}
+
               </div>
 
               {/* Password */}
-              <div className="register-form-group">
-                <label htmlFor="password">Password</label>
+              <div className="register-page-form-group">
+
+                <label htmlFor="password">
+                  Password
+                </label>
 
                 <div
-                  className={`register-input-wrapper ${
-                    errors.password ? "register-input-error" : ""
+                  className={`register-page-input-wrapper ${
+                    errors.password
+                      ? "register-page-input-error"
+                      : ""
                   }`}
                 >
                   <Lock size={18} />
 
                   <input
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
                     placeholder="Enter your password"
                     {...register("password", {
                       required: "Password is required",
                       minLength: {
                         value: 8,
-                        message: "Password must be at least 8 characters",
+                        message:
+                          "Password must be at least 8 characters",
                       },
                     })}
                   />
 
                   <button
                     type="button"
-                    className="register-password-toggle"
-                    onClick={() => setShowPassword((previous) => !previous)}
+                    className="register-page-password-toggle"
+                    onClick={() =>
+                      setShowPassword(
+                        (previous) => !previous
+                      )
+                    }
+                    aria-label={
+                      showPassword
+                        ? "Hide password"
+                        : "Show password"
+                    }
                   >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    {showPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
                   </button>
                 </div>
 
                 {errors.password && (
-                  <span className="register-form-error">
+                  <span className="register-page-form-error">
                     {errors.password.message}
                   </span>
                 )}
+
               </div>
 
               {/* Confirm Password */}
-              <div className="register-form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className="register-page-form-group">
+
+                <label htmlFor="confirmPassword">
+                  Confirm Password
+                </label>
 
                 <div
-                  className={`register-input-wrapper ${
-                    errors.confirmPassword ? "register-input-error" : ""
+                  className={`register-page-input-wrapper ${
+                    errors.confirmPassword
+                      ? "register-page-input-error"
+                      : ""
                   }`}
                 >
                   <Lock size={18} />
 
                   <input
                     id="confirmPassword"
-                    type={showConfirmPassword ? "text" : "password"}
+                    type={
+                      showConfirmPassword
+                        ? "text"
+                        : "password"
+                    }
                     placeholder="Confirm your password"
                     {...register("confirmPassword", {
-                      required: "Please confirm your password",
+                      required:
+                        "Please confirm your password",
                       validate: (value) =>
                         value === getValues("password") ||
                         "Passwords do not match",
                     })}
                   />
+
                   <button
                     type="button"
-                    className="register-password-toggle"
+                    className="register-page-password-toggle"
                     onClick={() =>
-                      setShowConfirmPassword((previous) => !previous)
+                      setShowConfirmPassword(
+                        (previous) => !previous
+                      )
+                    }
+                    aria-label={
+                      showConfirmPassword
+                        ? "Hide password"
+                        : "Show password"
                     }
                   >
                     {showConfirmPassword ? (
@@ -290,39 +371,50 @@ function Register() {
                 </div>
 
                 {errors.confirmPassword && (
-                  <span className="register-form-error">
+                  <span className="register-page-form-error">
                     {errors.confirmPassword.message}
                   </span>
                 )}
+
               </div>
 
               {/* Submit */}
               <button
                 type="submit"
-                className="register-button"
+                className="register-page-button"
                 disabled={isSubmitting}
               >
                 <span>
-                  {isSubmitting ? "Creating Account..." : "Create Account"}
+                  {isSubmitting
+                    ? "Creating Account..."
+                    : "Create Account"}
                 </span>
 
-                {!isSubmitting && <ArrowRight size={18} />}
+                {!isSubmitting && (
+                  <ArrowRight size={18} />
+                )}
               </button>
+
             </form>
 
-            <div className="login-existing-account">
-              <span>Already have an account?</span>
+            <div className="register-page-login-existing">
+              <span>
+                Already have an account?
+              </span>
 
               <button
                 type="button"
-                className="register-login-link"
+                className="register-page-login-link"
                 onClick={() => navigate("/")}
               >
                 Login
               </button>
             </div>
+
           </div>
+
         </section>
+
       </div>
     </div>
   );

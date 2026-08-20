@@ -1,0 +1,644 @@
+/* =========================================================
+   TASKLY — CREATE / EDIT TASK MODAL
+   DARK + EMERALD THEME
+   ========================================================= */
+
+/* =========================================================
+   OVERLAY
+   ========================================================= */
+
+.task-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  background: rgba(3, 7, 6, 0.78);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  animation: taskOverlayIn 0.2s ease;
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.task-modal {
+  width: 100%;
+  max-width: 520px;
+
+  max-height: calc(100vh - 48px);
+
+  overflow-y: auto;
+
+  background: #111715;
+
+  border: 1px solid #26332f;
+  border-radius: 16px;
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(52, 211, 153, 0.03);
+
+  color: #e7eeeb;
+
+  animation: taskModalIn 0.22s ease;
+}
+
+
+/* Scrollbar */
+
+.task-modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.task-modal::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.task-modal::-webkit-scrollbar-thumb {
+  background: #263a34;
+  border-radius: 10px;
+}
+
+.task-modal::-webkit-scrollbar-thumb:hover {
+  background: #315046;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.task-modal-header {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 24px 24px 20px;
+
+  border-bottom: 1px solid #202b28;
+}
+
+
+/* =========================================================
+   ICON
+   ========================================================= */
+
+.task-modal-icon {
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  font-size: 21px;
+  font-weight: 500;
+}
+
+
+/* Create */
+
+.task-modal-icon.create-icon {
+  background: rgba(52, 211, 153, 0.12);
+
+  border: 1px solid rgba(52, 211, 153, 0.22);
+
+  color: #34d399;
+}
+
+
+/* Edit */
+
+.task-modal-icon.edit-icon {
+  background: rgba(52, 211, 153, 0.12);
+
+  border: 1px solid rgba(52, 211, 153, 0.22);
+
+  color: #34d399;
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.task-modal-heading {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.task-modal-heading h2 {
+  margin: 0 0 5px;
+
+  color: #edf5f1;
+
+  font-size: 20px;
+  line-height: 1.25;
+
+  font-weight: 650;
+
+  letter-spacing: -0.4px;
+}
+
+.task-modal-heading p {
+  margin: 0;
+
+  color: #788781;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.task-modal-close {
+  width: 32px;
+  height: 32px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+
+  padding: 0;
+
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: #687670;
+
+  font-size: 23px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.task-modal-close:hover {
+  background: #1a2421;
+
+  border-color: #2b3935;
+
+  color: #e5eee9;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.task-modal-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  padding: 24px;
+}
+
+
+/* =========================================================
+   FORM FIELD
+   ========================================================= */
+
+.task-form-field {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.task-form-field label {
+  color: #c9d5d0;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.1px;
+}
+
+.task-form-field label span {
+  margin-left: 4px;
+
+  color: #34d399;
+}
+
+
+/* =========================================================
+   LABEL + CHARACTER COUNT
+   ========================================================= */
+
+.task-form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+.task-form-label-row > span {
+  color: #596761;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.task-form-field input,
+.task-form-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #293632;
+  border-radius: 9px;
+
+  background: #0c1210;
+
+  color: #e8f0ec;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+
+/* Input */
+
+.task-form-field input {
+  height: 46px;
+
+  padding: 0 13px;
+}
+
+
+/* Textarea */
+
+.task-form-field textarea {
+  min-height: 120px;
+
+  padding: 12px 13px;
+
+  resize: vertical;
+
+  line-height: 1.55;
+}
+
+
+/* Focus */
+
+.task-form-field input:focus,
+.task-form-field textarea:focus {
+  background: #0e1513;
+
+  border-color: #34a982;
+
+  box-shadow:
+    0 0 0 3px rgba(52, 211, 153, 0.08);
+}
+
+
+/* Placeholder */
+
+.task-form-field input::placeholder,
+.task-form-field textarea::placeholder {
+  color: #4d5a55;
+}
+
+
+/* =========================================================
+   ERROR INPUT
+   ========================================================= */
+
+.task-form-field input.task-input-error,
+.task-form-field textarea.task-input-error {
+  border-color: #b65c62;
+}
+
+.task-form-field input.task-input-error:focus,
+.task-form-field textarea.task-input-error:focus {
+  border-color: #c86b70;
+
+  box-shadow:
+    0 0 0 3px rgba(200, 107, 112, 0.08);
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.task-form-error {
+  margin: -2px 0 0;
+
+  color: #e27b81;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.task-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 10px;
+
+  margin-top: 2px;
+  padding-top: 20px;
+
+  border-top: 1px solid #202b28;
+}
+
+
+/* =========================================================
+   CANCEL
+   ========================================================= */
+
+.task-modal-cancel {
+  height: 42px;
+
+  padding: 0 17px;
+
+  border: 1px solid #303d38;
+  border-radius: 8px;
+
+  background: #151d1a;
+
+  color: #9ba9a3;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.task-modal-cancel:hover:not(:disabled) {
+  background: #1b2622;
+
+  border-color: #3b4b45;
+
+  color: #e1e9e5;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.task-modal-submit {
+  min-width: 125px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 0 18px;
+
+  border: 1px solid #34d399;
+  border-radius: 8px;
+
+  background: #34d399;
+
+  color: #07130e;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 18px rgba(52, 211, 153, 0.12);
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.task-modal-submit:hover:not(:disabled) {
+  background: #4adea5;
+
+  border-color: #4adea5;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 22px rgba(52, 211, 153, 0.18);
+}
+
+.task-modal-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+/* Disabled */
+
+.task-modal-submit:disabled,
+.task-modal-cancel:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.task-modal-loading {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  color: #7f8e87;
+}
+
+.task-modal-loading p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+
+/* Loading spinner */
+
+.task-modal-spinner {
+  width: 28px;
+  height: 28px;
+
+  border: 2px solid #263631;
+  border-top-color: #34d399;
+
+  border-radius: 50%;
+
+  animation: taskSpin 0.8s linear infinite;
+}
+
+
+/* =========================================================
+   BUTTON SPINNER
+   ========================================================= */
+
+.task-button-spinner {
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid rgba(7, 19, 14, 0.25);
+  border-top-color: #07130e;
+
+  border-radius: 50%;
+
+  animation: taskSpin 0.7s linear infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes taskOverlayIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes taskModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes taskSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .task-modal-overlay {
+    align-items: flex-end;
+
+    padding: 0;
+  }
+
+  .task-modal {
+    max-width: none;
+
+    max-height: 92vh;
+
+    border-radius: 16px 16px 0 0;
+
+    border-bottom: none;
+
+    animation: taskModalMobileIn 0.22s ease;
+  }
+
+  .task-modal-header {
+    padding: 20px;
+  }
+
+  .task-modal-form {
+    padding: 20px;
+  }
+
+  .task-modal-actions {
+    justify-content: stretch;
+  }
+
+  .task-modal-cancel,
+  .task-modal-submit {
+    flex: 1;
+  }
+}
+
+@keyframes taskModalMobileIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

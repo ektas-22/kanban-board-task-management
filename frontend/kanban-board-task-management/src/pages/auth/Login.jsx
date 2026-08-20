@@ -7,7 +7,7 @@ import { CheckSquare, Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import { useAuth } from "../../context/useAuth";
 import { login as loginService } from "../../services/authService";
 
-import "../../assets/styles/login.css";
+import "../../assets/styles/auth/login.css";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);

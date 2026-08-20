@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { getAllUsers, deleteUser } from "../../services/adminService";
+import {
+  getAllUsers,
+  getUserById,
+  deleteUser,
+} from "../../services/adminService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+
+import "../../assets/styles/admin/adminusers.css";
 
 function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -9,112 +14,424 @@ function AdminUsers() {
 
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const navigate = useNavigate();
+
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+
+  const [deleteUserId, setDeleteUserId] = useState(null);
+
   const pageSize = 5;
 
-  const fetchUsers = async () => {
+  useEffect(() => {
+    let ignore = false;
+
+    const loadUsers = async () => {
+      try {
+        setLoading(true);
+
+        const data = await getAllUsers(
+          page,
+          pageSize,
+          "createdAt",
+          "desc",
+        );
+
+        if (!ignore) {
+          setUsers(data.content || []);
+          setTotalPages(data.totalPages || 0);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+
+        if (!ignore) {
+          toast.error(
+            error.response?.data?.message ||
+              "Failed to load users",
+          );
+
+          setLoading(false);
+        }
+      }
+    };
+
+    loadUsers();
+
+    return () => {
+      ignore = true;
+    };
+  }, [page]);
+
+  const handleView = async (userId) => {
     try {
-      setLoading(true);
+      setDetailsLoading(true);
 
-      const data = await getAllUsers(page, pageSize, "createdAt", "desc");
+      const data = await getUserById(userId);
 
-      console.log("Users response:", data);
-
-      setUsers(data.content);
-      setTotalPages(data.totalPages);
+      setSelectedUser(data);
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching user details:", error);
 
-      toast.error(error.response?.data?.message || "Failed to load users");
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to load user details",
+      );
     } finally {
-      setLoading(false);
+      setDetailsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchUsers();
-  }, [page]);
+  const handleDelete = (userId) => {
+    setDeleteUserId(userId);
+  };
 
-  if (loading) {
-    return <p>Loading users...</p>;
-  }
-  const handleDelete = async (userId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this user?",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
+  const confirmDelete = async () => {
     try {
-      await deleteUser(userId);
+      await deleteUser(deleteUserId);
 
       toast.success("User deleted successfully");
 
-      // Refresh the current page
-      fetchUsers();
+      const data = await getAllUsers(
+        page,
+        pageSize,
+        "createdAt",
+        "desc",
+      );
+
+      setUsers(data.content || []);
+      setTotalPages(data.totalPages || 0);
+
+      if (
+        data.content?.length === 0 &&
+        page > 0
+      ) {
+        setPage((currentPage) => currentPage - 1);
+      }
     } catch (error) {
       console.error("Error deleting user:", error);
 
-      toast.error(error.response?.data?.message || "Failed to delete user");
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to delete user",
+      );
+    } finally {
+      setDeleteUserId(null);
     }
   };
+
+  const closeUserDetails = () => {
+    setSelectedUser(null);
+  };
+
+  if (loading) {
+    return (
+      <div className="admin-users-loading">
+        <div className="admin-users-spinner"></div>
+        <p>Loading users...</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h1>User Management</h1>
+    <div className="admin-users-page">
+      <div className="admin-users-content">
 
-      {users.length === 0 ? (
-        <p>No users found.</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Role</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        {/* =================================================
+            PAGE HEADER
+            ================================================= */}
 
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-                <td>
-                  <button onClick={() => handleDelete(user.id)}>Delete</button>
-                </td>
-                <td>
-                  <button onClick={() => navigate(`/admin/users/${user.id}`)}>
-                    View
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <section className="admin-users-header">
+          <div>
+            <p className="admin-users-eyebrow">
+              ADMINISTRATION
+            </p>
+
+            <h1>User management</h1>
+
+            <p>
+              View and manage the people in your
+              Taskly workspace.
+            </p>
+          </div>
+
+          <div className="admin-users-count">
+            <strong>{users.length}</strong>
+            <span>
+              {users.length === 1 ? "user" : "users"} shown
+            </span>
+          </div>
+        </section>
+
+        {/* =================================================
+            TABLE
+            ================================================= */}
+
+        <section className="admin-users-section">
+          {users.length === 0 ? (
+            <div className="admin-users-empty">
+              <div className="admin-users-empty-icon">
+                👥
+              </div>
+
+              <h2>No users found</h2>
+
+              <p>
+                There are currently no users to display.
+              </p>
+            </div>
+          ) : (
+            <div className="admin-users-table-card">
+              <div className="admin-users-table-wrapper">
+                <table className="admin-users-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th className="users-actions-heading">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td>
+                          <div className="user-name-cell">
+                            <div className="user-avatar">
+                              {user.name
+                                ?.charAt(0)
+                                ?.toUpperCase()}
+                            </div>
+
+                            <div className="user-name-info">
+                              <span>
+                                {user.name}
+                              </span>
+
+                              <small>
+                                #{user.id}
+                              </small>
+                            </div>
+                          </div>
+                        </td>
+
+                        <td>
+                          <span className="user-email">
+                            {user.email}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span
+                            className={`user-role ${
+                              user.role === "ADMIN"
+                                ? "user-role-admin"
+                                : "user-role-user"
+                            }`}
+                          >
+                            {user.role}
+                          </span>
+                        </td>
+
+                        <td>
+                          <div className="user-actions">
+                            <button
+                              type="button"
+                              className="user-view-button"
+                              onClick={() =>
+                                handleView(user.id)
+                              }
+                            >
+                              View
+                            </button>
+
+                            <button
+                              type="button"
+                              className="user-delete-button"
+                              onClick={() =>
+                                handleDelete(user.id)
+                              }
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+
+              <div className="admin-users-pagination">
+                <button
+                  type="button"
+                  className="pagination-button"
+                  onClick={() =>
+                    setPage((prev) => prev - 1)
+                  }
+                  disabled={page === 0}
+                >
+                  ← Previous
+                </button>
+
+                <span className="pagination-info">
+                  Page <strong>{page + 1}</strong> of{" "}
+                  <strong>{totalPages}</strong>
+                </span>
+
+                <button
+                  type="button"
+                  className="pagination-button"
+                  onClick={() =>
+                    setPage((prev) => prev + 1)
+                  }
+                  disabled={
+                    page >= totalPages - 1
+                  }
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* =================================================
+          USER DETAILS MODAL
+          ================================================= */}
+
+      {selectedUser && (
+        <div
+          className="admin-details-overlay"
+          onClick={closeUserDetails}
+        >
+          <div
+            className="admin-details-modal"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              type="button"
+              className="admin-details-close"
+              onClick={closeUserDetails}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <div className="admin-details-avatar">
+              {selectedUser.name
+                ?.charAt(0)
+                ?.toUpperCase()}
+            </div>
+
+            <h2>{selectedUser.name}</h2>
+
+            <p className="admin-details-subtitle">
+              User account details
+            </p>
+
+            {detailsLoading ? (
+              <div className="admin-details-loading">
+                <div className="admin-users-spinner"></div>
+                <p>Loading details...</p>
+              </div>
+            ) : (
+              <div className="admin-details-list">
+                <div className="admin-detail-row">
+                  <span>ID</span>
+                  <strong>
+                    #{selectedUser.id}
+                  </strong>
+                </div>
+
+                <div className="admin-detail-row">
+                  <span>Name</span>
+                  <strong>
+                    {selectedUser.name}
+                  </strong>
+                </div>
+
+                <div className="admin-detail-row">
+                  <span>Email</span>
+                  <strong>
+                    {selectedUser.email}
+                  </strong>
+                </div>
+
+                <div className="admin-detail-row">
+                  <span>Role</span>
+
+                  <span
+                    className={`user-role ${
+                      selectedUser.role === "ADMIN"
+                        ? "user-role-admin"
+                        : "user-role-user"
+                    }`}
+                  >
+                    {selectedUser.role}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="admin-details-done-button"
+              onClick={closeUserDetails}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
 
-      <br />
+      {/* =================================================
+          DELETE MODAL
+          ================================================= */}
 
-      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 0}>
-        Previous
-      </button>
+      {deleteUserId && (
+        <div className="admin-details-overlay">
+          <div className="admin-delete-modal">
+            <div className="admin-delete-icon">
+              !
+            </div>
 
-      <span style={{ margin: "0 10px" }}>
-        Page {page + 1} of {totalPages}
-      </span>
+            <h2>Delete user?</h2>
 
-      <button
-        onClick={() => setPage((prev) => prev + 1)}
-        disabled={page >= totalPages - 1}
-      >
-        Next
-      </button>
+            <p>
+              This user will be permanently deleted.
+              This action cannot be undone.
+            </p>
+
+            <div className="admin-delete-actions">
+              <button
+                type="button"
+                className="admin-delete-cancel"
+                onClick={() =>
+                  setDeleteUserId(null)
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="admin-delete-confirm"
+                onClick={confirmDelete}
+              >
+                Delete User
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

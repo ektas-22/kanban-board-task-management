@@ -1,20 +1,16 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoutes";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-
 import Dashboard from "../pages/task/Dashboard";
-import CreateTask from "../pages/task/CreateTask";
-import EditTask from "../pages/task/EditTask";
-
+import CreateTask from "../components/task/CreateTask";
+import EditTask from "../components/task/EditTask";
+import AdminLayout from "../components/layout/AdminLayout";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminUsers from "../pages/admin/AdminUsers";
-import UserDetails from "../pages/admin/UserDetails";
 import AdminTasks from "../pages/admin/AdminTasks";
-import TaskDetails from "../pages/admin/TaskDetails";
-import AdminLayout from "../components/layout/AdminLayout";
-
-import ProtectedRoute from "./ProtectedRoutes";
+import NotFound from "../pages/error/NotFound";
+import Unauthorized from "../pages/error/Unauthorized";
 
 function AppRoutes() {
   return (
@@ -23,27 +19,26 @@ function AppRoutes() {
         {/* Public Routes */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* USER Routes */}
+        {/* User Routes */}
         <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/tasks/create" element={<CreateTask />} />
           <Route path="/tasks/edit/:taskId" element={<EditTask />} />
         </Route>
 
-        {/* ADMIN Routes */}
+        {/* Admin Routes */}
         <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/users/:userId" element={<UserDetails />} />
             <Route path="/admin/tasks" element={<AdminTasks />} />
-            <Route path="/admin/tasks/:taskId" element={<TaskDetails />} />
           </Route>
         </Route>
 
-        {/* Unknown URL */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* 404 - Unknown URL */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "../../assets/styles/admin/admindashboard.css";
 
 function AdminDashboard() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [dashboard, setDashboard] = useState(null);
@@ -18,14 +18,13 @@ function AdminDashboard() {
       try {
         const data = await getAdminDashboard();
 
-        console.log("Admin dashboard response:", data);
-
         setDashboard(data);
       } catch (error) {
         console.error("Error fetching admin dashboard:", error);
 
         toast.error(
-          error.response?.data?.message || "Failed to load admin dashboard",
+          error.response?.data?.message ||
+            "Failed to load admin dashboard",
         );
       } finally {
         setLoading(false);
@@ -35,16 +34,11 @@ function AdminDashboard() {
     fetchDashboard();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/");
-  };
-
   if (loading) {
     return (
       <div className="admin-dashboard-loading">
         <div className="admin-dashboard-spinner"></div>
-        <p>Loading admin dashboard...</p>
+        <p>Loading workspace...</p>
       </div>
     );
   }
@@ -52,7 +46,10 @@ function AdminDashboard() {
   if (!dashboard) {
     return (
       <div className="admin-dashboard-error">
-        <h2>Unable to load dashboard</h2>
+        <div className="admin-error-icon">!</div>
+
+        <h2>Unable to load workspace</h2>
+
         <p>Please try again later.</p>
       </div>
     );
@@ -60,127 +57,233 @@ function AdminDashboard() {
 
   return (
     <div className="admin-dashboard-page">
-      {/* Header */}
+      <div className="admin-dashboard-content">
 
-      <header className="admin-dashboard-header">
-        <div className="admin-dashboard-logo">
-          <div className="admin-dashboard-logo-icon">✓</div>
+        {/* =================================================
+            PAGE HEADER
+            ================================================= */}
 
+        <section className="admin-page-heading">
           <div>
-            <span>Taskly</span>
-            <small>Admin</small>
-          </div>
-        </div>
+            <p className="admin-page-eyebrow">
+              ADMIN WORKSPACE
+            </p>
 
-        <div className="admin-dashboard-header-actions">
-          <span className="admin-dashboard-user">{user?.name || "Admin"}</span>
+            <h1>Workspace overview</h1>
 
-          <button
-            type="button"
-            className="admin-dashboard-logout"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </div>
-      </header>
-
-      {/* Main Content */}
-
-      <main className="admin-dashboard-content">
-        {/* Welcome */}
-
-        <section className="admin-dashboard-welcome">
-          <div>
-            <p className="admin-dashboard-eyebrow">ADMINISTRATION</p>
-
-            <h1>Admin Dashboard</h1>
-
-            <p>
-              Welcome back, {user?.name || "Admin"}. Here's an overview of your
-              Taskly workspace.
+            <p className="admin-page-description">
+              Keep track of your Taskly workspace and manage
+              users and tasks from one place.
             </p>
           </div>
-        </section>
 
-        {/* Statistics */}
+          <div className="admin-welcome">
+            <span className="admin-welcome-label">
+              Signed in as
+            </span>
 
-        <section className="admin-dashboard-stats">
-          <div className="admin-stat-card">
-            <span className="admin-stat-label">Total Users</span>
-
-            <strong>{dashboard.totalUsers}</strong>
-          </div>
-
-          <div className="admin-stat-card">
-            <span className="admin-stat-label">Total Tasks</span>
-
-            <strong>{dashboard.totalTasks}</strong>
-          </div>
-
-          <div className="admin-stat-card">
-            <span className="admin-stat-label">To Do</span>
-
-            <strong>{dashboard.toDoTasks}</strong>
-          </div>
-
-          <div className="admin-stat-card">
-            <span className="admin-stat-label">In Progress</span>
-
-            <strong>{dashboard.inProgressTasks}</strong>
-          </div>
-
-          <div className="admin-stat-card">
-            <span className="admin-stat-label">Completed</span>
-
-            <strong>{dashboard.completedTasks}</strong>
+            <strong>
+              {user?.name || "Admin"}
+            </strong>
           </div>
         </section>
 
-        {/* Management */}
+        {/* =================================================
+            STATISTICS
+            ================================================= */}
+
+        <section className="admin-statistics">
+
+          <div className="admin-stat-card admin-stat-card-accent">
+            <div className="admin-stat-top">
+              <span className="admin-stat-label">
+                Total users
+              </span>
+
+              <span className="admin-stat-icon">
+                👥
+              </span>
+            </div>
+
+            <strong>
+              {dashboard.totalUsers}
+            </strong>
+
+            <span className="admin-stat-description">
+              Registered accounts
+            </span>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-top">
+              <span className="admin-stat-label">
+                Total tasks
+              </span>
+
+              <span className="admin-stat-icon">
+                ✓
+              </span>
+            </div>
+
+            <strong>
+              {dashboard.totalTasks}
+            </strong>
+
+            <span className="admin-stat-description">
+              Across the workspace
+            </span>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-top">
+              <span className="admin-stat-label">
+                To do
+              </span>
+
+              <span className="admin-stat-icon">
+                ○
+              </span>
+            </div>
+
+            <strong>
+              {dashboard.toDoTasks}
+            </strong>
+
+            <span className="admin-stat-description">
+              Waiting to start
+            </span>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-top">
+              <span className="admin-stat-label">
+                In progress
+              </span>
+
+              <span className="admin-stat-icon">
+                ◐
+              </span>
+            </div>
+
+            <strong>
+              {dashboard.inProgressTasks}
+            </strong>
+
+            <span className="admin-stat-description">
+              Currently active
+            </span>
+          </div>
+
+          <div className="admin-stat-card">
+            <div className="admin-stat-top">
+              <span className="admin-stat-label">
+                Completed
+              </span>
+
+              <span className="admin-stat-icon">
+                ✓
+              </span>
+            </div>
+
+            <strong>
+              {dashboard.completedTasks}
+            </strong>
+
+            <span className="admin-stat-description">
+              Finished tasks
+            </span>
+          </div>
+
+        </section>
+
+        {/* =================================================
+            MANAGEMENT
+            ================================================= */}
 
         <section className="admin-management-section">
-          <div className="admin-section-heading">
-            <h2>Management</h2>
 
-            <p>Manage users and tasks across your Taskly workspace.</p>
+          <div className="admin-section-heading">
+            <div>
+              <p className="admin-section-eyebrow">
+                WORKSPACE
+              </p>
+
+              <h2>Manage your workspace</h2>
+
+              <p>
+                Choose an area to continue.
+              </p>
+            </div>
           </div>
 
           <div className="admin-management-grid">
+
+            {/* Users */}
+
             <button
               type="button"
               className="admin-management-card"
               onClick={() => navigate("/admin/users")}
             >
-              <div className="admin-management-icon">👥</div>
-
-              <div>
-                <h3>Manage Users</h3>
-
-                <p>View and manage registered users.</p>
+              <div className="admin-management-icon">
+                👥
               </div>
 
-              <span className="admin-management-arrow">→</span>
+              <div className="admin-management-content">
+                <span className="admin-management-label">
+                  USERS
+                </span>
+
+                <h3>
+                  Manage users
+                </h3>
+
+                <p>
+                  View registered users and manage
+                  their accounts.
+                </p>
+              </div>
+
+              <span className="admin-management-arrow">
+                →
+              </span>
             </button>
+
+            {/* Tasks */}
 
             <button
               type="button"
               className="admin-management-card"
               onClick={() => navigate("/admin/tasks")}
             >
-              <div className="admin-management-icon">✓</div>
-
-              <div>
-                <h3>Manage Tasks</h3>
-
-                <p>View and manage all tasks.</p>
+              <div className="admin-management-icon">
+                ✓
               </div>
 
-              <span className="admin-management-arrow">→</span>
+              <div className="admin-management-content">
+                <span className="admin-management-label">
+                  TASKS
+                </span>
+
+                <h3>
+                  Manage tasks
+                </h3>
+
+                <p>
+                  Review and manage tasks across
+                  the workspace.
+                </p>
+              </div>
+
+              <span className="admin-management-arrow">
+                →
+              </span>
             </button>
+
           </div>
         </section>
-      </main>
+
+      </div>
     </div>
   );
 }

@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { getAllTasks, deleteTask } from "../../services/adminService";
+import {
+  getAllTasks,
+  getTaskById,
+  deleteTask,
+} from "../../services/adminService";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+
+import "../../assets/styles/admin/admintask.css";
 
 function AdminTasks() {
   const [tasks, setTasks] = useState([]);
@@ -9,112 +14,448 @@ function AdminTasks() {
 
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const navigate = useNavigate();
+
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+
+  const [deleteTaskId, setDeleteTaskId] = useState(null);
+
   const pageSize = 5;
 
-  const fetchTasks = async () => {
+  useEffect(() => {
+    let ignore = false;
+
+    const loadTasks = async () => {
+      try {
+        setLoading(true);
+
+        const data = await getAllTasks(
+          page,
+          pageSize,
+          "createdAt",
+          "desc",
+        );
+
+        if (!ignore) {
+          setTasks(data.content || []);
+          setTotalPages(data.totalPages || 0);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error(
+          "Error fetching admin tasks:",
+          error,
+        );
+
+        if (!ignore) {
+          toast.error(
+            error.response?.data?.message ||
+              "Failed to load tasks",
+          );
+
+          setLoading(false);
+        }
+      }
+    };
+
+    loadTasks();
+
+    return () => {
+      ignore = true;
+    };
+  }, [page]);
+
+  const handleView = async (taskId) => {
     try {
-      setLoading(true);
+      setDetailsLoading(true);
 
-      const data = await getAllTasks(page, pageSize, "createdAt", "desc");
+      const data = await getTaskById(taskId);
 
-      console.log("Admin tasks response:", data);
-
-      setTasks(data.content);
-      setTotalPages(data.totalPages);
+      setSelectedTask(data);
     } catch (error) {
-      console.error("Error fetching admin tasks:", error);
+      console.error(
+        "Error fetching task details:",
+        error,
+      );
 
-      toast.error(error.response?.data?.message || "Failed to load tasks");
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to load task details",
+      );
     } finally {
-      setLoading(false);
+      setDetailsLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, [page]);
+  const handleDelete = (taskId) => {
+    setDeleteTaskId(taskId);
+  };
 
-  if (loading) {
-    return <p>Loading tasks...</p>;
-  }
-
-  const handleDelete = async (taskId) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this task?",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
+  const confirmDelete = async () => {
     try {
-      await deleteTask(taskId);
+      await deleteTask(deleteTaskId);
 
       toast.success("Task deleted successfully");
 
-      fetchTasks();
+      const data = await getAllTasks(
+        page,
+        pageSize,
+        "createdAt",
+        "desc",
+      );
+
+      setTasks(data.content || []);
+      setTotalPages(data.totalPages || 0);
+
+      if (
+        data.content?.length === 0 &&
+        page > 0
+      ) {
+        setPage((currentPage) => currentPage - 1);
+      }
     } catch (error) {
       console.error("Error deleting task:", error);
 
-      toast.error(error.response?.data?.message || "Failed to delete task");
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to delete task",
+      );
+    } finally {
+      setDeleteTaskId(null);
     }
   };
 
+  const closeTaskDetails = () => {
+    setSelectedTask(null);
+  };
+
+  const getTaskStatusLabel = (status) => {
+    switch (status) {
+      case "TODO":
+        return "To Do";
+
+      case "IN_PROGRESS":
+        return "In Progress";
+
+      case "COMPLETED":
+        return "Completed";
+
+      default:
+        return status || "Unknown";
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="admin-tasks-loading">
+        <div className="admin-tasks-spinner"></div>
+        <p>Loading tasks...</p>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <h1>Task Management</h1>
+    <div className="admin-tasks-page">
+      <div className="admin-tasks-content">
 
-      {tasks.length === 0 ? (
-        <p>No tasks found.</p>
-      ) : (
-        <table border="1" cellPadding="10">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
+        {/* =================================================
+            PAGE HEADER
+            ================================================= */}
 
-          <tbody>
-            {tasks.map((task) => (
-              <tr key={task.id}>
-                <td>{task.id}</td>
-                <td>{task.title}</td>
-                <td>{task.description}</td>
-                <td>{task.status}</td>
-                <td>
-                  <button onClick={() => navigate(`/admin/tasks/${task.id}`)}>
-                    View
-                  </button>
+        <section className="admin-tasks-header">
+          <div>
+            <p className="admin-tasks-eyebrow">
+              ADMINISTRATION
+            </p>
 
-                  <button onClick={() => handleDelete(task.id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+            <h1>Task management</h1>
+
+            <p>
+              Review and manage work across your
+              Taskly workspace.
+            </p>
+          </div>
+
+          <div className="admin-tasks-count">
+            <strong>{tasks.length}</strong>
+
+            <span>
+              {tasks.length === 1
+                ? "task"
+                : "tasks"}{" "}
+              shown
+            </span>
+          </div>
+        </section>
+
+        {/* =================================================
+            TABLE
+            ================================================= */}
+
+        <section className="admin-tasks-section">
+          {tasks.length === 0 ? (
+            <div className="admin-tasks-empty">
+              <div className="admin-tasks-empty-icon">
+                ✓
+              </div>
+
+              <h2>No tasks found</h2>
+
+              <p>
+                There are currently no tasks to
+                display.
+              </p>
+            </div>
+          ) : (
+            <div className="admin-tasks-table-card">
+              <div className="admin-tasks-table-wrapper">
+                <table className="admin-tasks-table">
+                  <thead>
+                    <tr>
+                      <th>Task</th>
+                      <th>Description</th>
+                      <th>Status</th>
+                      <th className="tasks-actions-heading">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {tasks.map((task) => (
+                      <tr key={task.id}>
+                        <td>
+                          <div className="task-title-cell">
+                            <span>
+                              {task.title}
+                            </span>
+
+                            <small>
+                              #{task.id}
+                            </small>
+                          </div>
+                        </td>
+
+                        <td>
+                          <span className="task-description">
+                            {task.description ||
+                              "No description"}
+                          </span>
+                        </td>
+
+                        <td>
+                          <span
+                            className={`task-status task-status-${task.status?.toLowerCase()}`}
+                          >
+                            <span className="task-status-dot"></span>
+
+                            {getTaskStatusLabel(
+                              task.status,
+                            )}
+                          </span>
+                        </td>
+
+                        <td>
+                          <div className="task-actions">
+                            <button
+                              type="button"
+                              className="task-view-button"
+                              onClick={() =>
+                                handleView(task.id)
+                              }
+                            >
+                              View
+                            </button>
+
+                            <button
+                              type="button"
+                              className="task-delete-button"
+                              onClick={() =>
+                                handleDelete(task.id)
+                              }
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+
+              <div className="admin-tasks-pagination">
+                <button
+                  type="button"
+                  className="task-pagination-button"
+                  onClick={() =>
+                    setPage((prev) => prev - 1)
+                  }
+                  disabled={page === 0}
+                >
+                  ← Previous
+                </button>
+
+                <span className="task-pagination-info">
+                  Page <strong>{page + 1}</strong>{" "}
+                  of{" "}
+                  <strong>{totalPages}</strong>
+                </span>
+
+                <button
+                  type="button"
+                  className="task-pagination-button"
+                  onClick={() =>
+                    setPage((prev) => prev + 1)
+                  }
+                  disabled={
+                    page >= totalPages - 1
+                  }
+                >
+                  Next →
+                </button>
+              </div>
+            </div>
+          )}
+        </section>
+      </div>
+
+      {/* =================================================
+          TASK DETAILS MODAL
+          ================================================= */}
+
+      {selectedTask && (
+        <div
+          className="admin-task-details-overlay"
+          onClick={closeTaskDetails}
+        >
+          <div
+            className="admin-task-details-modal"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
+          >
+            <button
+              type="button"
+              className="admin-task-details-close"
+              onClick={closeTaskDetails}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            <div className="admin-task-details-icon">
+              ✓
+            </div>
+
+            <h2>{selectedTask.title}</h2>
+
+            <p className="admin-task-details-subtitle">
+              Task details
+            </p>
+
+            {detailsLoading ? (
+              <div className="admin-task-details-loading">
+                <div className="admin-tasks-spinner"></div>
+
+                <p>Loading details...</p>
+              </div>
+            ) : (
+              <div className="admin-task-details-list">
+                <div className="admin-task-detail-row">
+                  <span>ID</span>
+
+                  <strong>
+                    #{selectedTask.id}
+                  </strong>
+                </div>
+
+                <div className="admin-task-detail-row">
+                  <span>Title</span>
+
+                  <strong>
+                    {selectedTask.title}
+                  </strong>
+                </div>
+
+                <div className="admin-task-detail-row admin-task-detail-description">
+                  <span>Description</span>
+
+                  <strong>
+                    {selectedTask.description ||
+                      "No description"}
+                  </strong>
+                </div>
+
+                <div className="admin-task-detail-row">
+                  <span>Status</span>
+
+                  <span
+                    className={`task-status task-status-${selectedTask.status?.toLowerCase()}`}
+                  >
+                    <span className="task-status-dot"></span>
+
+                    {getTaskStatusLabel(
+                      selectedTask.status,
+                    )}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="admin-task-details-done-button"
+              onClick={closeTaskDetails}
+            >
+              Close
+            </button>
+          </div>
+        </div>
       )}
 
-      <br />
+      {/* =================================================
+          DELETE MODAL
+          ================================================= */}
 
-      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 0}>
-        Previous
-      </button>
+      {deleteTaskId && (
+        <div className="admin-task-details-overlay">
+          <div className="admin-task-delete-modal">
+            <div className="admin-task-delete-icon">
+              !
+            </div>
 
-      <span style={{ margin: "0 10px" }}>
-        Page {page + 1} of {totalPages}
-      </span>
+            <h2>Delete task?</h2>
 
-      <button
-        onClick={() => setPage((prev) => prev + 1)}
-        disabled={page >= totalPages - 1}
-      >
-        Next
-      </button>
+            <p>
+              This task will be permanently deleted.
+              This action cannot be undone.
+            </p>
+
+            <div className="admin-task-delete-actions">
+              <button
+                type="button"
+                className="admin-task-delete-cancel"
+                onClick={() =>
+                  setDeleteTaskId(null)
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                className="admin-task-delete-confirm"
+                onClick={confirmDelete}
+              >
+                Delete Task
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

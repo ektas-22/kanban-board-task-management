@@ -1,0 +1,801 @@
+/* =========================================================
+   TASKLY ADMIN TASKS
+   DARK + EMERALD
+   ========================================================= */
+
+.admin-tasks-page {
+  min-height: calc(100vh - 68px);
+  background: #0b0f0e;
+}
+
+.admin-tasks-content {
+  width: 100%;
+  max-width: 1180px;
+
+  margin: 0 auto;
+  padding: 38px 40px 60px;
+
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.admin-tasks-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+.admin-tasks-eyebrow {
+  margin: 0 0 7px;
+
+  color: #10b981;
+
+  font-size: 10px;
+  font-weight: 750;
+
+  letter-spacing: 1.5px;
+}
+
+.admin-tasks-header h1 {
+  margin: 0 0 8px;
+
+  color: #edf5f1;
+
+  font-size: 29px;
+  line-height: 1.2;
+
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.admin-tasks-header p {
+  margin: 0;
+
+  color: #74827c;
+
+  font-size: 13px;
+}
+
+.admin-tasks-count {
+  display: flex;
+  align-items: baseline;
+
+  gap: 7px;
+
+  padding: 10px 13px;
+
+  border: 1px solid #22312b;
+  border-radius: 8px;
+
+  background: #111816;
+}
+
+.admin-tasks-count strong {
+  color: #34d399;
+
+  font-size: 16px;
+}
+
+.admin-tasks-count span {
+  color: #687770;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.admin-tasks-table-card {
+  overflow: hidden;
+
+  background: #111816;
+
+  border: 1px solid #202d28;
+  border-radius: 11px;
+}
+
+.admin-tasks-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-tasks-table {
+  width: 100%;
+
+  min-width: 720px;
+
+  border-collapse: collapse;
+}
+
+.admin-tasks-table thead {
+  background: #0f1513;
+}
+
+.admin-tasks-table th {
+  height: 45px;
+
+  padding: 0 20px;
+
+  border-bottom: 1px solid #202d28;
+
+  color: #65746d;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-align: left;
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+}
+
+.tasks-actions-heading {
+  text-align: right !important;
+}
+
+.admin-tasks-table td {
+  height: 68px;
+
+  padding: 0 20px;
+
+  border-bottom: 1px solid #1b2722;
+
+  color: #cdd8d3;
+
+  font-size: 12px;
+}
+
+.admin-tasks-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-tasks-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.admin-tasks-table tbody tr:hover {
+  background: #141c19;
+}
+
+/* =========================================================
+   TASK TITLE
+   ========================================================= */
+
+.task-title-cell {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  min-width: 170px;
+}
+
+.task-title-cell span {
+  color: #dce6e1;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-title-cell small {
+  color: #52615a;
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.task-description {
+  display: block;
+
+  max-width: 290px;
+
+  color: #7e8d85;
+
+  font-size: 11px;
+  line-height: 1.5;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.task-status {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  min-height: 24px;
+
+  padding: 0 9px;
+
+  border-radius: 20px;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.task-status-dot {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+}
+
+.task-status-todo {
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+
+  color: #94a3b8;
+}
+
+.task-status-in_progress {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.16);
+
+  color: #fbbf24;
+}
+
+.task-status-completed {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.16);
+
+  color: #34d399;
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.task-actions {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 7px;
+}
+
+.task-view-button,
+.task-delete-button {
+  height: 29px;
+
+  padding: 0 11px;
+
+  border-radius: 6px;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.task-view-button {
+  border: 1px solid #293a33;
+
+  background: #151d1a;
+
+  color: #a5b3ad;
+}
+
+.task-view-button:hover {
+  background: #1a2621;
+  border-color: #3c5147;
+  color: #e2ebe7;
+}
+
+.task-delete-button {
+  border: 1px solid #3a2928;
+
+  background: #191413;
+
+  color: #c87872;
+}
+
+.task-delete-button:hover {
+  background: #241817;
+  border-color: #613b38;
+  color: #f08b83;
+}
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.admin-tasks-pagination {
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 17px;
+
+  border-top: 1px solid #202d28;
+
+  background: #0f1513;
+}
+
+.task-pagination-button {
+  height: 30px;
+
+  padding: 0 12px;
+
+  border: 1px solid #293832;
+  border-radius: 6px;
+
+  background: #151c19;
+
+  color: #8b9993;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.task-pagination-button:hover:not(:disabled) {
+  background: #1b2521;
+  border-color: #3a5046;
+  color: #dbe5e1;
+}
+
+.task-pagination-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.task-pagination-info {
+  color: #63716b;
+
+  font-size: 10px;
+}
+
+.task-pagination-info strong {
+  color: #aebbb5;
+}
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.admin-tasks-empty {
+  padding: 70px 30px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  background: #111816;
+
+  border: 1px solid #202d28;
+  border-radius: 11px;
+
+  text-align: center;
+}
+
+.admin-tasks-empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 13px;
+
+  border-radius: 11px;
+
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+
+  color: #34d399;
+
+  font-size: 19px;
+}
+
+.admin-tasks-empty h2 {
+  margin: 0 0 6px;
+
+  color: #dce6e1;
+
+  font-size: 16px;
+}
+
+.admin-tasks-empty p {
+  margin: 0;
+
+  color: #697770;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   DETAILS MODAL
+   ========================================================= */
+
+.admin-task-details-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 200;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(3, 7, 6, 0.78);
+
+  backdrop-filter: blur(5px);
+}
+
+.admin-task-details-modal {
+  position: relative;
+
+  width: 100%;
+  max-width: 460px;
+
+  padding: 28px;
+
+  background: #111816;
+
+  border: 1px solid #2a3933;
+  border-radius: 13px;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+
+  box-sizing: border-box;
+}
+
+.admin-task-details-close {
+  position: absolute;
+
+  top: 14px;
+  right: 14px;
+
+  width: 28px;
+  height: 28px;
+
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+
+  color: #66756e;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+.admin-task-details-close:hover {
+  background: #1a2420;
+  color: #dbe5e1;
+}
+
+.admin-task-details-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 13px;
+
+  border-radius: 10px;
+
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.17);
+
+  color: #34d399;
+
+  font-size: 18px;
+}
+
+.admin-task-details-modal h2 {
+  margin: 0 0 5px;
+
+  color: #e9f1ed;
+
+  font-size: 19px;
+
+  word-break: break-word;
+}
+
+.admin-task-details-subtitle {
+  margin: 0 0 20px;
+
+  color: #6e7d76;
+
+  font-size: 11px;
+}
+
+.admin-task-details-list {
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid #202d28;
+  border-radius: 8px;
+
+  overflow: hidden;
+}
+
+.admin-task-detail-row {
+  min-height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 0 13px;
+
+  border-bottom: 1px solid #1e2a25;
+}
+
+.admin-task-detail-row:last-child {
+  border-bottom: none;
+}
+
+.admin-task-detail-row > span:first-child {
+  flex-shrink: 0;
+
+  color: #66756e;
+
+  font-size: 10px;
+}
+
+.admin-task-detail-row strong {
+  max-width: 70%;
+
+  color: #d2ddd8;
+
+  font-size: 10px;
+
+  text-align: right;
+
+  word-break: break-word;
+}
+
+.admin-task-detail-description {
+  align-items: flex-start;
+
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.admin-task-detail-description strong {
+  line-height: 1.6;
+}
+
+.admin-task-details-done-button {
+  width: 100%;
+  height: 36px;
+
+  margin-top: 17px;
+
+  border: 1px solid #294238;
+  border-radius: 7px;
+
+  background: #17211d;
+
+  color: #b5c3bd;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.admin-task-details-done-button:hover {
+  background: #1d2b25;
+  border-color: #3b5549;
+  color: #e4ece8;
+}
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.admin-task-delete-modal {
+  width: 100%;
+  max-width: 390px;
+
+  padding: 27px;
+
+  background: #111816;
+
+  border: 1px solid #382b2a;
+  border-radius: 13px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
+}
+
+.admin-task-delete-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 13px;
+
+  border-radius: 50%;
+
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.18);
+
+  color: #f87171;
+
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.admin-task-delete-modal h2 {
+  margin: 0 0 7px;
+
+  color: #e9efec;
+
+  font-size: 18px;
+}
+
+.admin-task-delete-modal p {
+  margin: 0 auto;
+
+  max-width: 310px;
+
+  color: #78857f;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.admin-task-delete-actions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 22px;
+}
+
+.admin-task-delete-cancel,
+.admin-task-delete-confirm {
+  flex: 1;
+
+  height: 35px;
+
+  border-radius: 7px;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.admin-task-delete-cancel {
+  border: 1px solid #293832;
+
+  background: #151c19;
+
+  color: #9aa8a2;
+}
+
+.admin-task-delete-cancel:hover {
+  background: #1b2521;
+}
+
+.admin-task-delete-confirm {
+  border: 1px solid #6a3431;
+
+  background: #351b19;
+
+  color: #f28b83;
+}
+
+.admin-task-delete-confirm:hover {
+  background: #43211f;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.admin-tasks-loading {
+  min-height: calc(100vh - 68px);
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 13px;
+
+  background: #0b0f0e;
+
+  color: #718078;
+}
+
+.admin-tasks-spinner {
+  width: 27px;
+  height: 27px;
+
+  border: 3px solid #1e2b26;
+  border-top-color: #10b981;
+
+  border-radius: 50%;
+
+  animation: admin-tasks-spin 0.8s linear infinite;
+}
+
+.admin-tasks-loading p {
+  margin: 0;
+
+  font-size: 12px;
+}
+
+@keyframes admin-tasks-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .admin-tasks-content {
+    padding: 30px 22px 45px;
+  }
+
+  .admin-tasks-header {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 16px;
+  }
+}
+
+@media (max-width: 450px) {
+  .admin-tasks-content {
+    padding: 25px 16px 40px;
+  }
+
+  .admin-tasks-header h1 {
+    font-size: 26px;
+  }
+
+  .admin-tasks-table th,
+  .admin-tasks-table td {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+}
